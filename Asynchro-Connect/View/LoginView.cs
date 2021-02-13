@@ -31,5 +31,13 @@ namespace Asynchro_Connect.View
         {
 
         }
+
+        private void createAccountButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            NewAccount accountWindow = new NewAccount();
+            accountWindow.ShowDialog();
+        }
+
     }
 }
