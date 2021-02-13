@@ -39,8 +39,10 @@ namespace Asynchro_Connect.View
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.descriptionLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // emailTextBox
@@ -53,7 +55,7 @@ namespace Asynchro_Connect.View
             this.emailTextBox.MinimumSize = new System.Drawing.Size(4, 25);
             this.emailTextBox.Multiline = true;
             this.emailTextBox.Name = "emailTextBox";
-            this.emailTextBox.Size = new System.Drawing.Size(210, 25);
+            this.emailTextBox.Size = new System.Drawing.Size(209, 25);
             this.emailTextBox.TabIndex = 0;
             // 
             // passwordTextBox
@@ -67,7 +69,7 @@ namespace Asynchro_Connect.View
             this.passwordTextBox.Multiline = true;
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(210, 25);
+            this.passwordTextBox.Size = new System.Drawing.Size(209, 25);
             this.passwordTextBox.TabIndex = 0;
             this.passwordTextBox.TextChanged += new System.EventHandler(this.passwordTextBox_TextChanged);
             // 
@@ -106,12 +108,13 @@ namespace Asynchro_Connect.View
             this.createAccountButton.BackColor = System.Drawing.Color.Plum;
             this.createAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createAccountButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createAccountButton.Location = new System.Drawing.Point(289, 41);
+            this.createAccountButton.Location = new System.Drawing.Point(288, 41);
             this.createAccountButton.Name = "createAccountButton";
-            this.createAccountButton.Size = new System.Drawing.Size(112, 25);
+            this.createAccountButton.Size = new System.Drawing.Size(113, 25);
             this.createAccountButton.TabIndex = 2;
             this.createAccountButton.Text = "Create Account";
             this.createAccountButton.UseVisualStyleBackColor = false;
+            this.createAccountButton.Click += new System.EventHandler(this.createAccountButton_Click);
             // 
             // loginButton
             // 
@@ -120,9 +123,9 @@ namespace Asynchro_Connect.View
             this.loginButton.BackColor = System.Drawing.Color.Plum;
             this.loginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loginButton.Location = new System.Drawing.Point(289, 3);
+            this.loginButton.Location = new System.Drawing.Point(288, 3);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(112, 25);
+            this.loginButton.Size = new System.Drawing.Size(113, 25);
             this.loginButton.TabIndex = 2;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = false;
@@ -132,7 +135,7 @@ namespace Asynchro_Connect.View
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.54874F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75.45126F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
             this.tableLayoutPanel1.Controls.Add(this.emailTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.passwordLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.emailLabel, 0, 0);
@@ -161,7 +164,7 @@ namespace Asynchro_Connect.View
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(423, 43);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(300, 43);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // descriptionLabel
@@ -170,10 +173,20 @@ namespace Asynchro_Connect.View
             this.descriptionLabel.AutoSize = true;
             this.descriptionLabel.Location = new System.Drawing.Point(3, 14);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(417, 15);
+            this.descriptionLabel.Size = new System.Drawing.Size(294, 15);
             this.descriptionLabel.TabIndex = 5;
             this.descriptionLabel.Text = "Login or sign up to study with your classmates!";
             this.descriptionLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(315, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(79, 46);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // LoginView
             // 
@@ -181,6 +194,7 @@ namespace Asynchro_Connect.View
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Thistle;
             this.ClientSize = new System.Drawing.Size(419, 149);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -192,6 +206,7 @@ namespace Asynchro_Connect.View
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -207,5 +222,6 @@ namespace Asynchro_Connect.View
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label descriptionLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
