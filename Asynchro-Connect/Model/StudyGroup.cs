@@ -20,6 +20,17 @@ namespace Asynchro_Connect.Model
         Winter
     };
 
+    public enum Days
+    {
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
+    };
+
     public class StudyGroup
     {
         public List<User> Members { get; private set; }
@@ -28,12 +39,13 @@ namespace Asynchro_Connect.Model
         public String CourseName { get; private set; }
         public int groupID;
         public Time MeetingTime { get; private set; }
+        public List<Days> MeetingDays { get; private set; }
         public int Duration { get; set; }
         public Semester CourseSemester;
         public String Description { get; set; }
         public DiscussionBoard GroupDiscussionBoard;
         
-        public StudyGroup(User admin, String studyGroupName, String courseName, int timeHour, int timeMinute, int duration, Semester courseSemester, String description)
+        public StudyGroup(User admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, String description)
         {
             Members = new List<User>();
             Admin = admin;
@@ -41,6 +53,7 @@ namespace Asynchro_Connect.Model
             CourseName = courseName;
             //groupID = maxGroupID+1;
             MeetingTime = new Time() { Hour = timeHour, Minute = timeMinute };
+            MeetingDays = meetingDays;
             Duration = duration;
             CourseSemester = courseSemester;
             Description = description;

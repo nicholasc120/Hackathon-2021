@@ -7,17 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Asynchro_Connect.Model;
 
 namespace Asynchro_Connect.View
 {
     public partial class HomeView : Form
     {
-        public HomeView()
+
+        User theUser;
+        public HomeView(User theUser)
         {
             InitializeComponent();
             this.homeTab.DrawMode = (TabDrawMode)DrawMode.OwnerDrawFixed;
             this.homeTab.DrawItem += new DrawItemEventHandler(homeView_DrawItem);
+            this.theUser = theUser;
+            PopulateActiveGroupList();
+        }
 
+        private void PopulateActiveGroupList()
+        {
+            activeGroupList.Items.Clear();
+            foreach (StudyGroup sg in theUser.Groups)
+            {
+                activeGroupList.Items.Add(sg.StudyGroupName);
+            }
         }
 
         // Method modified from https://stackoverflow.com/questions/30822870/recoloring-tabcontrol
@@ -68,19 +81,134 @@ namespace Asynchro_Connect.View
             }
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private void openGroupButton_Click(object sender, EventArgs e)
         {
-
+            String s = (String)activeGroupList.SelectedItem;
+            StudyGroup stg = null;
+            //find the group for the user
+            foreach (StudyGroup sg in theUser.Groups)
+            {
+                if (sg.StudyGroupName.Equals(s))
+                {
+                    stg = sg;
+                }
+            }
+            if (stg == null)
+            {
+                return;
+            }
+            //launch StudyGroupHomepage
+            StudyGroupHomepage sghp = new StudyGroupHomepage(theUser, stg);
+            sghp.Show();
         }
 
-        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        private void emailTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            if (homeTab.SelectedIndex == 0)
+            {
+                List<StudyGroup> results = SearchEngine.SearchByStudyGroupName(theUser.Groups, emailTextBox.Text);
+                activeGroupList.Items.Clear();
+                foreach(StudyGroup sg in results)
+                {
+                    activeGroupList.Items.Add(sg.StudyGroupName);
+                }
+            }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void activeGroupList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            groupChatPreview.Items.Clear();
+            String s = (String)activeGroupList.SelectedItem;
+            StudyGroup stg = null;
+            //find the group for the user
+            foreach (StudyGroup sg in theUser.Groups)
+            {
+                if (sg.StudyGroupName.Equals(s))
+                {
+                    stg = sg;
+                }
+            }
+            
+            if (stg == null)
+            {
+                return;
+            }
 
+            foreach (String message in stg.GroupDiscussionBoard.GetListOfMessages())
+            {
+                groupChatPreview.Items.Add(message);
+            }
+        }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (homeTab.SelectedIndex == 1)
+            {
+                List<StudyGroup> results = SearchEngine.SearchByStudyGroupName(theUser.Groups, emailTextBox.Text);
+                activeGroupList.Items.Clear();
+                foreach (StudyGroup sg in results)
+                {
+                    groupsList.Items.Add(sg.StudyGroupName);
+                }
+            }
+        }
+
+        private void groupsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            String s = (String)activeGroupList.SelectedItem;
+            StudyGroup stg = null;
+            //find the group for the user
+            foreach (StudyGroup sg in theUser.Groups)
+            {
+                if (sg.StudyGroupName.Equals(s))
+                {
+                    stg = sg;
+                }
+            }
+
+            if (stg == null)
+            {
+                return;
+            }
+
+            descriptionTextBox.Text = stg.Description;
+            string minute = stg.MeetingTime.Minute + "";
+            if (minute.Length == 0)
+            {
+                minute = "0" + minute;
+            }
+            meetingTimeFieldLabel.Text = stg.MeetingTime.Hour + ":" + minute;
+            durationFieldLabel.Text = stg.Duration + "";
+        }
+
+        private void joinGroupButton_Click(object sender, EventArgs e)
+        {
+            String s = (String)activeGroupList.SelectedItem;
+            StudyGroup stg = null;
+            //find the group for the user
+            foreach (StudyGroup sg in theUser.Groups)
+            {
+                if (sg.StudyGroupName.Equals(s))
+                {
+                    stg = sg;
+                }
+            }
+            if (stg == null)
+            {
+                return;
+            }
+
+            theUser.JoinGroup(stg);
+            stg.AddMember(theUser);
+        }
+
+        private void createGroupButton_Click(object sender, EventArgs e)
+        {
+            //generate warning
+            List<Days> daysSelected = new List<Days>();
+
+            StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, );
+            //add to database
         }
     }
 }

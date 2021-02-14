@@ -34,7 +34,6 @@ namespace Asynchro_Connect.View
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeView));
             this.createGroupsTab = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.createGroupButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,6 +52,7 @@ namespace Asynchro_Connect.View
             this.label12 = new System.Windows.Forms.Label();
             this.hoursDurationScroll = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
+            this.createGroupButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.courseNameTextBox = new System.Windows.Forms.TextBox();
@@ -81,19 +81,19 @@ namespace Asynchro_Connect.View
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.activeGroupsTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.activeGroupList = new System.Windows.Forms.ListBox();
-            this.groupChatPreview = new System.Windows.Forms.TextBox();
+            this.groupChatPreview = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.openGroupButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.homeTab = new System.Windows.Forms.TabControl();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.createGroupsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -134,6 +134,7 @@ namespace Asynchro_Connect.View
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -145,7 +146,6 @@ namespace Asynchro_Connect.View
             this.splitContainer3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.homeTab.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // createGroupsTab
@@ -175,20 +175,6 @@ namespace Asynchro_Connect.View
             this.splitContainer4.Size = new System.Drawing.Size(602, 385);
             this.splitContainer4.SplitterDistance = 316;
             this.splitContainer4.TabIndex = 3;
-            // 
-            // createGroupButton
-            // 
-            this.createGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.createGroupButton.BackColor = System.Drawing.Color.Plum;
-            this.createGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createGroupButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createGroupButton.Location = new System.Drawing.Point(101, 99);
-            this.createGroupButton.Name = "createGroupButton";
-            this.createGroupButton.Size = new System.Drawing.Size(90, 25);
-            this.createGroupButton.TabIndex = 5;
-            this.createGroupButton.Text = "Create Group";
-            this.createGroupButton.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel1
             // 
@@ -405,6 +391,21 @@ namespace Asynchro_Connect.View
             this.label4.TabIndex = 1;
             this.label4.Text = "Meeting Days";
             // 
+            // createGroupButton
+            // 
+            this.createGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.createGroupButton.BackColor = System.Drawing.Color.Plum;
+            this.createGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.createGroupButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.createGroupButton.Location = new System.Drawing.Point(101, 99);
+            this.createGroupButton.Name = "createGroupButton";
+            this.createGroupButton.Size = new System.Drawing.Size(90, 25);
+            this.createGroupButton.TabIndex = 5;
+            this.createGroupButton.Text = "Create Group";
+            this.createGroupButton.UseVisualStyleBackColor = false;
+            this.createGroupButton.Click += new System.EventHandler(this.createGroupButton_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
@@ -564,6 +565,7 @@ namespace Asynchro_Connect.View
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(193, 25);
             this.searchTextBox.TabIndex = 1;
+            this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // button3
             // 
@@ -622,11 +624,12 @@ namespace Asynchro_Connect.View
             this.groupsList.BackColor = System.Drawing.Color.LavenderBlush;
             this.groupsList.FormattingEnabled = true;
             this.groupsList.ItemHeight = 15;
-            this.groupsList.Location = new System.Drawing.Point(0, 3);
+            this.groupsList.Location = new System.Drawing.Point(3, 0);
             this.groupsList.Name = "groupsList";
             this.groupsList.ScrollAlwaysVisible = true;
             this.groupsList.Size = new System.Drawing.Size(294, 289);
             this.groupsList.TabIndex = 0;
+            this.groupsList.SelectedIndexChanged += new System.EventHandler(this.groupsList_SelectedIndexChanged);
             // 
             // joinGroupButton
             // 
@@ -641,6 +644,7 @@ namespace Asynchro_Connect.View
             this.joinGroupButton.TabIndex = 3;
             this.joinGroupButton.Text = "Join Group";
             this.joinGroupButton.UseVisualStyleBackColor = false;
+            this.joinGroupButton.Click += new System.EventHandler(this.joinGroupButton_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -760,6 +764,28 @@ namespace Asynchro_Connect.View
             this.splitContainer1.SplitterDistance = 32;
             this.splitContainer1.TabIndex = 0;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(293, 30);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(287, 15);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Your Groups";
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.emailTextBox);
@@ -782,6 +808,7 @@ namespace Asynchro_Connect.View
             this.emailTextBox.Name = "emailTextBox";
             this.emailTextBox.Size = new System.Drawing.Size(193, 25);
             this.emailTextBox.TabIndex = 1;
+            this.emailTextBox.TextChanged += new System.EventHandler(this.emailTextBox_TextChanged);
             // 
             // searchButton
             // 
@@ -796,7 +823,6 @@ namespace Asynchro_Connect.View
             this.searchButton.TabIndex = 4;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = false;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // splitContainer2
             // 
@@ -844,16 +870,17 @@ namespace Asynchro_Connect.View
             this.activeGroupList.ScrollAlwaysVisible = true;
             this.activeGroupList.Size = new System.Drawing.Size(294, 289);
             this.activeGroupList.TabIndex = 0;
+            this.activeGroupList.SelectedIndexChanged += new System.EventHandler(this.activeGroupList_SelectedIndexChanged);
             // 
             // groupChatPreview
             // 
             this.groupChatPreview.BackColor = System.Drawing.Color.LavenderBlush;
-            this.groupChatPreview.Location = new System.Drawing.Point(3, 3);
-            this.groupChatPreview.Multiline = true;
+            this.groupChatPreview.FormattingEnabled = true;
+            this.groupChatPreview.ItemHeight = 15;
+            this.groupChatPreview.Location = new System.Drawing.Point(2, 2);
             this.groupChatPreview.Name = "groupChatPreview";
-            this.groupChatPreview.ReadOnly = true;
-            this.groupChatPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.groupChatPreview.Size = new System.Drawing.Size(293, 289);
+            this.groupChatPreview.ScrollAlwaysVisible = true;
+            this.groupChatPreview.Size = new System.Drawing.Size(294, 289);
             this.groupChatPreview.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -878,6 +905,7 @@ namespace Asynchro_Connect.View
             this.openGroupButton.TabIndex = 3;
             this.openGroupButton.Text = "Open Group";
             this.openGroupButton.UseVisualStyleBackColor = false;
+            this.openGroupButton.Click += new System.EventHandler(this.openGroupButton_Click);
             // 
             // button1
             // 
@@ -909,29 +937,6 @@ namespace Asynchro_Connect.View
             this.homeTab.SelectedIndex = 0;
             this.homeTab.Size = new System.Drawing.Size(616, 416);
             this.homeTab.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(287, 15);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Your Groups";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(293, 30);
-            this.tableLayoutPanel5.TabIndex = 1;
             // 
             // HomeView
             // 
@@ -992,6 +997,8 @@ namespace Asynchro_Connect.View
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -1000,13 +1007,10 @@ namespace Asynchro_Connect.View
             this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
-            this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.homeTab.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1040,7 +1044,6 @@ namespace Asynchro_Connect.View
         private SplitContainer splitContainer2;
         private SplitContainer splitContainer3;
         private ListBox activeGroupList;
-        private TextBox groupChatPreview;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button openGroupButton;
         private Button button1;
@@ -1075,5 +1078,6 @@ namespace Asynchro_Connect.View
         private NumericUpDown hoursDurationScroll;
         private Label label2;
         private TableLayoutPanel tableLayoutPanel5;
+        private ListBox groupChatPreview;
     }
 }
