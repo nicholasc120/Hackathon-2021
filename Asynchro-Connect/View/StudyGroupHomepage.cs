@@ -20,11 +20,21 @@ namespace Asynchro_Connect.View
             this.theUser = theUser;
             this.theStudyGroup = theStudyGroup;
 
-            if(theStudyGroup.Admin != theUser)
+            InitializeComponent();
+
+            RefreshMemberList();
+
+            if (theStudyGroup.Admin != theUser)
             {
                 kickUserButton.Visible = false;
             }
-            InitializeComponent();
+
+            string minute = theStudyGroup.MeetingTime.Minute + "";
+            if (minute.Length == 1)
+            {
+                minute = "0" + minute;
+            }
+            meetingTimeLabel.Text = theStudyGroup.MeetingTime.Hour + ":" + minute;
         }
 
         private void MemberListBox_Leave(object sender, EventArgs e)
@@ -34,8 +44,40 @@ namespace Asynchro_Connect.View
 
         private void MemberListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if user is admin
-            kickUserButton.Enabled = true;
+            if (theUser == theStudyGroup.Admin)
+                kickUserButton.Enabled = true;
+        }
+
+        private void kickUserButton_Click(object sender, EventArgs e)
+        {
+            String s = MemberListBox.SelectedItem.ToString(); //does this work?
+            foreach (User user in theStudyGroup.Members)
+            {
+                if (user.DisplayName.Equals(s))
+                {
+                    user.Groups.Remove(theStudyGroup);
+                    theStudyGroup.Members.Remove(user);
+                }
+            }
+            RefreshMemberList();
+        }
+
+        private void RefreshMemberList()
+        {
+            MemberListBox.Items.Clear();
+            MemberListBox.Items.Add(theUser.DisplayName + "*");
+            foreach (User user in theStudyGroup.Members)
+            {
+                if (user != theUser)
+                {
+                    MemberListBox.Items.Add(user.DisplayName);
+                }
+            }
+        }
+
+        private void sendMessageButton_Click(object sender, EventArgs e)
+        {
+            theStudyGroup.GroupDiscussionBoard.SendMessage(messageTextBox.Text, theUser);
         }
     }
 }

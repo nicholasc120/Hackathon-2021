@@ -58,6 +58,7 @@ namespace Asynchro_Connect.Model
             CourseSemester = courseSemester;
             Description = description;
             GroupDiscussionBoard = new DiscussionBoard();
+            AddMember(admin);
         }
         
         public void AddMember(User member)

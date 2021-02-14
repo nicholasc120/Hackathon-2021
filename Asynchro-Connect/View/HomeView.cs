@@ -108,7 +108,7 @@ namespace Asynchro_Connect.View
             {
                 List<StudyGroup> results = SearchEngine.SearchByStudyGroupName(theUser.Groups, emailTextBox.Text);
                 activeGroupList.Items.Clear();
-                foreach(StudyGroup sg in results)
+                foreach (StudyGroup sg in results)
                 {
                     activeGroupList.Items.Add(sg.StudyGroupName);
                 }
@@ -128,7 +128,7 @@ namespace Asynchro_Connect.View
                     stg = sg;
                 }
             }
-            
+
             if (stg == null)
             {
                 return;
@@ -173,7 +173,7 @@ namespace Asynchro_Connect.View
 
             descriptionTextBox.Text = stg.Description;
             string minute = stg.MeetingTime.Minute + "";
-            if (minute.Length == 0)
+            if (minute.Length == 1)
             {
                 minute = "0" + minute;
             }
@@ -205,10 +205,93 @@ namespace Asynchro_Connect.View
         private void createGroupButton_Click(object sender, EventArgs e)
         {
             //generate warning
-            List<Days> daysSelected = new List<Days>();
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to create this group?", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //do something
+                List<Days> daysSelected = new List<Days>();
+                foreach (ListViewItem listItem in meetingDaysCheckBox.CheckedItems)
+                {
+                    if (listItem.Text.Equals("Monday"))
+                    {
+                        daysSelected.Add(Days.Monday);
+                    }
+                    if (listItem.Text.Equals("Tuesday"))
+                    {
+                        daysSelected.Add(Days.Tuesday);
+                    }
+                    if (listItem.Text.Equals("Wednesday"))
+                    {
+                        daysSelected.Add(Days.Wednesday);
+                    }
+                    if (listItem.Text.Equals("Thursday"))
+                    {
+                        daysSelected.Add(Days.Thursday);
+                    }
+                    if (listItem.Text.Equals("Friday"))
+                    {
+                        daysSelected.Add(Days.Friday);
+                    }
+                    if (listItem.Text.Equals("Saturday"))
+                    {
+                        daysSelected.Add(Days.Saturday);
+                    }
+                    if (listItem.Text.Equals("Sunday"))
+                    {
+                        daysSelected.Add(Days.Sunday);
+                    }
+                }
 
-            StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, );
-            //add to database
+                Semester theSemester;
+                if (seasonComboBox.Text.Equals("Spring"))
+                {
+                    theSemester = Semester.Spring;
+                }
+                else if (seasonComboBox.Text.Equals("Fall"))
+                {
+                    theSemester = Semester.Fall;
+                }
+                else if (seasonComboBox.Text.Equals("Winter"))
+                {
+                    theSemester = Semester.Winter;
+                }
+                else
+                {
+                    theSemester = Semester.Summer;
+                }
+                StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, descriptionTextBook.Text);
+                theUser.JoinGroup(sg);
+                PopulateActiveGroupList();
+                //add to database
+                MessageBox.Show("Study Group successfully created!", "Group created", MessageBoxButtons.OK);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //give warning -- are you sure?
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to leave this group?", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                MessageBox.Show("Successfully left study group", "Group Left", MessageBoxButtons.OK);
+                String s = (String)activeGroupList.SelectedItem;
+                StudyGroup stg = null;
+                //find the group for the user
+                foreach (StudyGroup sg in theUser.Groups)
+                {
+                    if (sg.StudyGroupName.Equals(s))
+                    {
+                        stg = sg;
+                    }
+                }
+                if (stg == null)
+                {
+                    return;
+                }
+
+                stg.Members.Remove(theUser);
+                theUser.Groups.Remove(stg);
+            }
         }
     }
 }
