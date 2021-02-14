@@ -18,6 +18,7 @@ namespace Asynchro_Connect
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             DBmanager dbm = new DBmanager();
             Application.Run(new View.LoginView(dbm));
             

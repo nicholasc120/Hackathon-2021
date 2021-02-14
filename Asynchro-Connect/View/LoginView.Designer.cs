@@ -199,9 +199,10 @@ namespace Asynchro_Connect.View
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginView";
-            this.Text = "Asynchro-Connect Sign In";
+            this.Text = "StudentSync Sign In";
             this.Load += new System.EventHandler(this.LoginView_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

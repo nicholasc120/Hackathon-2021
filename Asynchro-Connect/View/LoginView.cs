@@ -44,7 +44,6 @@ namespace Asynchro_Connect.View
                 accountWindow = new NewAccount(this, dbManager);
             }
             accountWindow.ShowDialog();
-
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -56,11 +55,12 @@ namespace Asynchro_Connect.View
         {
             User theUser = await dbManager.GetUser(emailTextBox.Text);
 
-            if(theUser == null)
+            if (theUser == null)
             {
                 //give error
                 MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else
+            }
+            else
             {
                 //login
                 this.Hide();
