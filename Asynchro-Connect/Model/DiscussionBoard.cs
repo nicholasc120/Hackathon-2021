@@ -8,7 +8,7 @@ namespace Asynchro_Connect.Model
 {
     public class DiscussionBoard
     {
-        public List<Message> History { get; private set; }
+        public List<Message> History { get; set; }
         
         public DiscussionBoard()
         {

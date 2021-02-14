@@ -15,13 +15,15 @@ namespace Asynchro_Connect.View
     {
         User theUser;
         StudyGroup theStudyGroup;
-        public StudyGroupHomepage(User theUser, StudyGroup theStudyGroup)
+        DBmanager dbm;
+        public StudyGroupHomepage(User theUser, StudyGroup theStudyGroup, DBmanager dbm)
         {
             this.theUser = theUser;
             this.theStudyGroup = theStudyGroup;
 
             InitializeComponent();
 
+            this.dbm = dbm;
             RefreshMemberList();
             RefreshMessages();
             if (!theStudyGroup.Admin.Equals(theUser))
@@ -75,10 +77,12 @@ namespace Asynchro_Connect.View
                 }
             }
         }
-        
-        private void RefreshMessages()
+
+        private async void RefreshMessages()
         {
             GroupDiscussionLog.Items.Clear();
+
+            theStudyGroup.GroupDiscussionBoard.History = await dbm.GetMessages(dbm.SGKEY(theStudyGroup.StudyGroupName, theStudyGroup.CourseName, theStudyGroup.CourseSemester, theStudyGroup.Year));
             foreach (String message in theStudyGroup.GroupDiscussionBoard.GetListOfMessages())
             {
                 GroupDiscussionLog.Items.Add(message);
@@ -88,6 +92,8 @@ namespace Asynchro_Connect.View
         private void sendMessageButton_Click(object sender, EventArgs e)
         {
             theStudyGroup.GroupDiscussionBoard.SendMessage(messageTextBox.Text, theUser);
+            dbm.CreateNewMessage(dbm.SGKEY(theStudyGroup.StudyGroupName, theStudyGroup.CourseName, theStudyGroup.CourseSemester, theStudyGroup.Year),
+               theUser.DisplayName, messageTextBox.Text);
             messageTextBox.Text = "";
             RefreshMessages();
         }

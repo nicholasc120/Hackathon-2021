@@ -117,7 +117,7 @@ namespace Asynchro_Connect.View
                 return;
             }
             //launch StudyGroupHomepage
-            StudyGroupHomepage sghp = new StudyGroupHomepage(theUser, stg);
+            StudyGroupHomepage sghp = new StudyGroupHomepage(theUser, stg, dbm);
             sghp.Show();
         }
 
@@ -136,7 +136,6 @@ namespace Asynchro_Connect.View
 
         private void activeGroupList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            groupChatPreview.Items.Clear();
             String s = (String)activeGroupList.SelectedItem;
             StudyGroup stg = null;
             //find the group for the user
@@ -153,12 +152,18 @@ namespace Asynchro_Connect.View
                 return;
             }
 
-            foreach (String message in stg.GroupDiscussionBoard.GetListOfMessages())
+            RefreshMessages(stg);
+        }
+        private async void RefreshMessages(StudyGroup theStudyGroup)
+        {
+            groupChatPreview.Items.Clear();
+
+            theStudyGroup.GroupDiscussionBoard.History = await dbm.GetMessages(dbm.SGKEY(theStudyGroup.StudyGroupName, theStudyGroup.CourseName, theStudyGroup.CourseSemester, theStudyGroup.Year));
+            foreach (String message in theStudyGroup.GroupDiscussionBoard.GetListOfMessages())
             {
                 groupChatPreview.Items.Add(message);
             }
         }
-
         private void searchTextBox_TextChanged(object sender, EventArgs e)
         {
             if (homeTab.SelectedIndex == 1)
