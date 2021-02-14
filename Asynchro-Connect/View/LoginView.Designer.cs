@@ -51,7 +51,7 @@ namespace Asynchro_Connect.View
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emailTextBox.BackColor = System.Drawing.Color.LavenderBlush;
             this.emailTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.emailTextBox.Location = new System.Drawing.Point(73, 3);
+            this.emailTextBox.Location = new System.Drawing.Point(72, 3);
             this.emailTextBox.MinimumSize = new System.Drawing.Size(4, 25);
             this.emailTextBox.Multiline = true;
             this.emailTextBox.Name = "emailTextBox";
@@ -64,7 +64,7 @@ namespace Asynchro_Connect.View
             | System.Windows.Forms.AnchorStyles.Right)));
             this.passwordTextBox.BackColor = System.Drawing.Color.LavenderBlush;
             this.passwordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passwordTextBox.Location = new System.Drawing.Point(73, 41);
+            this.passwordTextBox.Location = new System.Drawing.Point(72, 41);
             this.passwordTextBox.MinimumSize = new System.Drawing.Size(4, 25);
             this.passwordTextBox.Multiline = true;
             this.passwordTextBox.Name = "passwordTextBox";
@@ -82,7 +82,7 @@ namespace Asynchro_Connect.View
             this.passwordLabel.Location = new System.Drawing.Point(3, 38);
             this.passwordLabel.MinimumSize = new System.Drawing.Size(0, 20);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(64, 20);
+            this.passwordLabel.Size = new System.Drawing.Size(63, 20);
             this.passwordLabel.TabIndex = 1;
             this.passwordLabel.Text = "Password";
             this.passwordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -96,7 +96,7 @@ namespace Asynchro_Connect.View
             this.emailLabel.Location = new System.Drawing.Point(3, 0);
             this.emailLabel.MinimumSize = new System.Drawing.Size(0, 20);
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(64, 20);
+            this.emailLabel.Size = new System.Drawing.Size(63, 20);
             this.emailLabel.TabIndex = 1;
             this.emailLabel.Text = "Email";
             this.emailLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -108,9 +108,9 @@ namespace Asynchro_Connect.View
             this.createAccountButton.BackColor = System.Drawing.Color.Plum;
             this.createAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createAccountButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createAccountButton.Location = new System.Drawing.Point(288, 41);
+            this.createAccountButton.Location = new System.Drawing.Point(287, 41);
             this.createAccountButton.Name = "createAccountButton";
-            this.createAccountButton.Size = new System.Drawing.Size(113, 25);
+            this.createAccountButton.Size = new System.Drawing.Size(114, 25);
             this.createAccountButton.TabIndex = 2;
             this.createAccountButton.Text = "Create Account";
             this.createAccountButton.UseVisualStyleBackColor = false;
@@ -123,9 +123,9 @@ namespace Asynchro_Connect.View
             this.loginButton.BackColor = System.Drawing.Color.Plum;
             this.loginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loginButton.Location = new System.Drawing.Point(288, 3);
+            this.loginButton.Location = new System.Drawing.Point(287, 3);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(113, 25);
+            this.loginButton.Size = new System.Drawing.Size(114, 25);
             this.loginButton.TabIndex = 2;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = false;
@@ -135,7 +135,7 @@ namespace Asynchro_Connect.View
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.54874F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75.45126F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tableLayoutPanel1.Controls.Add(this.emailTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.passwordLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.emailLabel, 0, 0);
@@ -198,9 +198,10 @@ namespace Asynchro_Connect.View
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginView";
-            this.Text = "Asynchro-Connect Sign In";
+            this.Text = "StudentSync Sign In";
             this.Load += new System.EventHandler(this.LoginView_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
