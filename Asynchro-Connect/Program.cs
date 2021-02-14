@@ -16,7 +16,7 @@ namespace Asynchro_Connect
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new View.LoginView());
+            Application.Run(new View.HomeView());
         }
     }
 }

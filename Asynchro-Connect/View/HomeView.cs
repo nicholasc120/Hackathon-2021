@@ -68,20 +68,19 @@ namespace Asynchro_Connect.View
             }
         }
 
-        private void HomeView_BackColorChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("PINEAPPLE");
-        }
-
-        private void HomeView_ForeColorChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("PINEAPPLE");
-        }
-
         private void searchButton_Click(object sender, EventArgs e)
         {
 
         }
 
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
