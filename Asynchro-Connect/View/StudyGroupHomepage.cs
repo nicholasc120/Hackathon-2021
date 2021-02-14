@@ -100,7 +100,10 @@ namespace Asynchro_Connect.View
 
         private void meetingLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process newProcess = System.Diagnostics.Process.Start(this.theStudyGroup.JoinUrl);
+            if (!(this.theStudyGroup.JoinUrl.Equals("No Link Available") || this.theStudyGroup.JoinUrl.Equals("")))
+            {
+                System.Diagnostics.Process newProcess = System.Diagnostics.Process.Start(this.theStudyGroup.JoinUrl);
+            }
 
         }
     }
