@@ -45,8 +45,10 @@ namespace Asynchro_Connect.Model
         public String Description { get; set; }
         public DiscussionBoard GroupDiscussionBoard;
         public int Year;
+        public String JoinUrl { get; set; }
 
-        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description)
+        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description, String joinUrl)
+
         {
             Members = new List<string>();
             Admin = admin;
@@ -58,12 +60,13 @@ namespace Asynchro_Connect.Model
             Duration = duration;
             CourseSemester = courseSemester;
             Year = year;
+            this.JoinUrl = joinUrl;
             Description = description;
             GroupDiscussionBoard = new DiscussionBoard();
             Members.Add(admin);
         }
 
-        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description, List<String> memberList)
+        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description, List<String> memberList, String joinUrl)
         {
             Members = memberList;
             Admin = admin;
@@ -75,6 +78,7 @@ namespace Asynchro_Connect.Model
             Duration = duration;
             CourseSemester = courseSemester;
             Year = year;
+            this.JoinUrl = joinUrl;
             Description = description;
             GroupDiscussionBoard = new DiscussionBoard();
         }

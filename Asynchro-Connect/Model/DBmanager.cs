@@ -13,7 +13,8 @@ namespace Asynchro_Connect.Model
         public static string USER_PATH = "Users", EMAIL_KEY = "Email", SCHOOL_KEY = "School", PASSWORD_KEY = "Password", GROUPS_KEY = "Groups",
             STUDY_GROUPS_PATH = "Study Groups", SG_ADMIN_KEY = "Admin", SG_NAME_KEY = "Name", SG_COURSE_KEY = "Course", SG_TIME_HOUR_KEY = "Time_Hour",
             SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
-            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", MESSAGES_PATH = "Messages", MSG_SENDER_KEY = "Sender", MSG_CONTENT_KEY = "Content", SG_MEMBER_KEY = "Members";
+            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", MESSAGES_PATH = "Messages", MSG_SENDER_KEY = "Sender", MSG_CONTENT_KEY = "Content", SG_MEMBER_KEY = "Members", SG_JOIN_URL = "Join_Url";
+
 
         public DBmanager()
         {
@@ -170,7 +171,7 @@ namespace Asynchro_Connect.Model
             return name + "_" + course + "_" + sem + "_" + year;
         }
 
-        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc)
+        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc, string joinUrl)
         {
             string sgKey = SGKEY(name, course, sem, year);
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
@@ -220,7 +221,8 @@ namespace Asynchro_Connect.Model
                 {SG_SEMESTER_KEY , sem},
                 {SG_YEAR_KEY , year},
                 {SG_DESC_KEY , desc},
-                {SG_MEMBER_KEY, members}
+                {SG_MEMBER_KEY, members},
+                {SG_JOIN_URL, joinUrl}
             };
             await docRef.SetAsync(group);
         }
@@ -297,7 +299,7 @@ namespace Asynchro_Connect.Model
                         Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), meetingDays, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
                         (Semester)((long)groupDict[SG_SEMESTER_KEY])
                         //Semester.Summer
-                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members);
+                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members, (String)groupDict[SG_JOIN_URL]);
                     returnList.Add(group);
                 }
             }
@@ -360,16 +362,16 @@ namespace Asynchro_Connect.Model
                 temp = (List<object>)groupDict[SG_MEMBER_KEY];
                 List<string> members = new List<string>();
                 foreach (object obj in temp)
-                { 
+                {
                     members.Add((string)obj);
                 }
 
-                    //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
-                    StudyGroup group = new StudyGroup((string)groupDict[SG_ADMIN_KEY], (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
-                    Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), meetingDays, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
-                    (Semester)((long)groupDict[SG_SEMESTER_KEY])
-                    //Semester.Winter
-                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members);
+                //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
+                StudyGroup group = new StudyGroup((string)groupDict[SG_ADMIN_KEY], (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
+                Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), meetingDays, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
+                (Semester)((long)groupDict[SG_SEMESTER_KEY])
+                //Semester.Winter
+                , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members, (String)groupDict[SG_JOIN_URL]);
                 return group;
             }
             return null;
@@ -388,7 +390,8 @@ namespace Asynchro_Connect.Model
             return false;
         }
 
-        public async void CreateNewMessage(string id, string sender, string content) {
+        public async void CreateNewMessage(string id, string sender, string content)
+        {
             Dictionary<string, object> message = new Dictionary<string, object>
             {
                 { MSG_SENDER_KEY, sender},
@@ -397,13 +400,15 @@ namespace Asynchro_Connect.Model
             await db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH).AddAsync(message);
         }
 
-        public async Task<List<Message>> GetMessages(string id) {
+        public async Task<List<Message>> GetMessages(string id)
+        {
             CollectionReference colRef = db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH);
             QuerySnapshot snapshot = await colRef.GetSnapshotAsync();
 
             List<Message> messageList = new List<Message>();
 
-            foreach (DocumentSnapshot document in snapshot.Documents) {
+            foreach (DocumentSnapshot document in snapshot.Documents)
+            {
                 Dictionary<string, object> messageDict = document.ToDictionary();
                 Message message = new Message((string)messageDict[MSG_CONTENT_KEY], (string)messageDict[MSG_SENDER_KEY]);
                 messageList.Add(message);
@@ -412,13 +417,14 @@ namespace Asynchro_Connect.Model
             return messageList;
         }
 
-        public async void AddGroupMember(string id, string user) {
+        public async void AddGroupMember(string id, string user)
+        {
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(id);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
             Dictionary<string, object> groupDict = snapshot.ToDictionary();
             List<object> temp = (List<object>)groupDict[SG_MEMBER_KEY];
-            List<string> members = new List<string>();          
+            List<string> members = new List<string>();
             foreach (object obj in temp)
             {
                 members.Add((string)obj);
@@ -427,7 +433,7 @@ namespace Asynchro_Connect.Model
 
             Dictionary<string, object> update = new Dictionary<string, object> {
                 {SG_MEMBER_KEY, members}
-            }  ;
+            };
 
             await docRef.UpdateAsync(update);
         }

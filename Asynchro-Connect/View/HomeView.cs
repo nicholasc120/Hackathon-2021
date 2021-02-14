@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
 using Asynchro_Connect.Model;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Asynchro_Connect.View
 {
@@ -279,11 +282,49 @@ namespace Asynchro_Connect.View
                 {
                     theSemester = Semester.Summer;
                 }
-                StudyGroup sg = new StudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
+
+                //StudyGroup sg = new StudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
+
+                System.Diagnostics.Process newProcess = System.Diagnostics.Process.Start("https://zoom.us/oauth/authorize?response_type=code&client_id=ZBoG2s2JRZSD_FoQZH2Zdg&redirect_uri=https%3A%2F%2Fbyjsxnki07.execute-api.us-west-2.amazonaws.com%2Fdevel%2Fuser");
+
+                // TODO need to check if they actually signed in correctly
+                // Wait until person has verified their zoom
+                newProcess.WaitForExit();
+                //while (newProcess != null && !newProcess.HasExited) 
+                //{
+                //    System.Threading.Thread.Sleep(1000);
+                //}
+
+                //TODO send the meeting time and other details
+                // request modified from: https://stackoverflow.com/questions/9145667/how-to-post-json-to-a-server-using-c
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Environment.GetEnvironmentVariable("AWS_URL_LINK"));
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = "{\"user\":\"test\"," +
+                                  "\"password\":\"bla\"}";
+
+                    streamWriter.Write(json);
+                }
+                string responseContent = null;
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                     responseContent = streamReader.ReadToEnd();
+                }
+                Console.WriteLine(responseContent);
+
+                var userObj = JObject.Parse(responseContent);
+                var joinLink = Convert.ToString(userObj["join_url"]);
+
+                StudyGroup sg = new StudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text, joinLink);
+
                 theUser.JoinGroup(sg);
                 PopulateActiveGroupList();
                 //add to database
-                await dbm.CreateNewStudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
+                await dbm.CreateNewStudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text, joinLink);
 
                 MessageBox.Show("Study Group successfully created!", "Group created", MessageBoxButtons.OK);
             }
