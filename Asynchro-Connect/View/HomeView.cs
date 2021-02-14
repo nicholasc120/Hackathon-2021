@@ -305,24 +305,31 @@ namespace Asynchro_Connect.View
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Environment.GetEnvironmentVariable("AWS_URL_LINK"));
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                {
-                    string json = "{\"user\":\"test\"," +
-                                  "\"password\":\"bla\"}";
+                var joinLink = "";
+                try
+                { 
+                    using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                    {
+                        string json = "{\"user\":\"test\"," +
+                                      "\"password\":\"bla\"}";
 
-                    streamWriter.Write(json);
-                }
-                string responseContent = null;
-                var httpResponse = (HttpWebResponse)request.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                     responseContent = streamReader.ReadToEnd();
-                }
-                Console.WriteLine(responseContent);
+                        streamWriter.Write(json);
+                    }
+                    string responseContent = null;
+                    var httpResponse = (HttpWebResponse)request.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                         responseContent = streamReader.ReadToEnd();
+                    }
+                    Console.WriteLine(responseContent);
 
-                var userObj = JObject.Parse(responseContent);
-                var joinLink = Convert.ToString(userObj["join_url"]);
+                    var userObj = JObject.Parse(responseContent);
+                    joinLink = Convert.ToString(userObj["join_url"]);
+                }
+                catch (Exception)
+                {
+                    joinLink = "No Link Available";
+                }
 
                 StudyGroup sg = new StudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text, joinLink);
 
