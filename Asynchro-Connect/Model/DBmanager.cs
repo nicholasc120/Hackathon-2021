@@ -225,14 +225,73 @@ namespace Asynchro_Connect.Model
         {
             CollectionReference allStudyGroupsCollection = db.Collection(STUDY_GROUPS_PATH);
             IAsyncEnumerable<DocumentReference> a = allStudyGroupsCollection.ListDocumentsAsync();
-            int count = await a.CountAsync();
-            
-            for(int i = 0; i < count; i++)
-            {
 
+            DocumentReference[] b = await a.ToArrayAsync();
+
+            List<StudyGroup> returnList = new List<StudyGroup>();
+
+            foreach (DocumentReference dr in b)
+            {
+                DocumentSnapshot snapshot = await dr.GetSnapshotAsync();
+                if (snapshot.Exists)
+                {
+                    Dictionary<string, object> groupDict = snapshot.ToDictionary();
+                    foreach (KeyValuePair<string, object> pair in groupDict)
+                    {
+                        Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+                    }
+
+                    List<object> temp = (List<object>)groupDict[SG_MEET_DAYS_KEY];
+                    List<Days> l = new List<Days>();
+                    //for (int i = 0; i < temp.Count; i++)
+                    foreach (object obj in temp)
+                    {
+                        //l.Add((Days)((long)temp[i]));
+                        //Console.WriteLine(l[i]);
+
+                        if (((string)obj).Equals("Monday"))
+                        {
+                            l.Add(Days.Monday);
+                        }
+                        else if (((string)obj).Equals("Tuesday"))
+                        {
+                            l.Add(Days.Tuesday);
+                        }
+                        else if (((string)obj).Equals("Wednesday"))
+                        {
+                            l.Add(Days.Wednesday);
+                        }
+                        else if (((string)obj).Equals("Thursday"))
+                        {
+                            l.Add(Days.Thursday);
+                        }
+                        else if (((string)obj).Equals("Friday"))
+                        {
+                            l.Add(Days.Friday);
+                        }
+                        else if (((string)obj).Equals("Saturday"))
+                        {
+                            l.Add(Days.Saturday);
+                        }
+                        else if (((string)obj).Equals("Sunday"))
+                        {
+                            l.Add(Days.Sunday);
+                            Console.WriteLine(l[l.Count - 1]);
+                        }
+                    }
+
+                    //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
+                    User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
+                    StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
+                        Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
+                        //(Semester)groupDict[SG_SEMESTER_KEY]
+                        Semester.Winter
+                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                    returnList.Add(group);
+                }
             }
 
-            return null;
+            return returnList;
         }
 
         public async Task<StudyGroup> GetStudyGroup(string id)

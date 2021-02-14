@@ -30,10 +30,7 @@ namespace Asynchro_Connect.View
 
         private async void PopulateAllGroupList()
         {
-            StudyGroup sg = await dbm.GetStudyGroup("G1_Hackathon_Fall_2021");
-            List<StudyGroup> everyGroup = new List<StudyGroup>();
-            everyGroup.Add(sg);
-            everyGroup = await dbm.GetEveryStudyGroup();
+            List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
 
             groupsList.Items.Clear();
             foreach (StudyGroup stg in everyGroup)
@@ -174,11 +171,7 @@ namespace Asynchro_Connect.View
 
         private async void groupsList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            StudyGroup sdg = await dbm.GetStudyGroup("G1_Hackathon_Fall_2021");
-            List<StudyGroup> everyGroup = new List<StudyGroup>();
-            everyGroup.Add(sdg);
-
+            List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
             String s = (String)groupsList.SelectedItem;
 
             StudyGroup stg = null;
