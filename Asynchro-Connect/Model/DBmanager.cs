@@ -15,13 +15,15 @@ namespace Asynchro_Connect.Model
             SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
             SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description";
 
-        public DBmanager() {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\.env\\Asynchro-Connect-cc3f69022ee5.json"); 
+        public DBmanager()
+        {
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\.env\\Asynchro-Connect-cc3f69022ee5.json");
             this.db = FirestoreDb.Create("asynchro-connect-304800");
         }
 
         // Returns null if the displayName doesn't exist. Returns a suggested displayName otherwise (displayName + some number that makes it unique)
-        public async Task<string> CheckUserExists(string displayName) {
+        public async Task<string> CheckUserExists(string displayName)
+        {
             //var watch = new System.Diagnostics.Stopwatch();
 
             //watch.Start();
@@ -29,11 +31,13 @@ namespace Asynchro_Connect.Model
             DocumentReference docRef = colRef.Document(displayName);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
-            if (!snapshot.Exists) {
+            if (!snapshot.Exists)
+            {
                 //watch.Stop(); 
                 //Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms"); 
                 //Console.WriteLine("null"); 
-                return null;}
+                return null;
+            }
 
             int num = 0;
             while (true)
@@ -44,7 +48,8 @@ namespace Asynchro_Connect.Model
                 {
                     num++;
                 }
-                else {
+                else
+                {
                     //watch.Stop(); 
                     //Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                     //Console.WriteLine(displayName + num);
@@ -52,7 +57,7 @@ namespace Asynchro_Connect.Model
                 }
             }
 
-            
+
             // Old version. Realized the above was more efficient, as we don't have to loop through every single user.
             //CollectionReference usersRef = db.Collection(USER_PATH);
             //QuerySnapshot snapshot = await usersRef.GetSnapshotAsync();
@@ -90,7 +95,8 @@ namespace Asynchro_Connect.Model
             //return displayName + num;
         }
 
-        public async Task<bool> CheckEmailExists(string email) {
+        public async Task<bool> CheckEmailExists(string email)
+        {
             CollectionReference usersRef = db.Collection(USER_PATH);
             Query query = usersRef.WhereEqualTo(EMAIL_KEY, email);
             QuerySnapshot snapshot = await query.GetSnapshotAsync();
@@ -127,7 +133,8 @@ namespace Asynchro_Connect.Model
             return null;
         }
 
-        public async void CreateNewUser(string displayName, string email, string school, string password) {
+        public async void CreateNewUser(string displayName, string email, string school, string password)
+        {
             DocumentReference docRef = db.Collection(USER_PATH).Document(displayName);
             Dictionary<string, object> user = new Dictionary<string, object>
             {
@@ -143,7 +150,8 @@ namespace Asynchro_Connect.Model
             DocumentReference docRef = db.Collection(USER_PATH).Document(displayName);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
-            if (snapshot.Exists) {
+            if (snapshot.Exists)
+            {
                 Dictionary<string, object> userDict = snapshot.ToDictionary();
                 User user = new User();
                 user.DisplayName = snapshot.Id;
@@ -158,14 +166,16 @@ namespace Asynchro_Connect.Model
 
         public string SGKEY(string name, string course, Semester sem, int year)
         {
-            return name + "_" + course + "_" + sem+"_"+year;
+            return name + "_" + course + "_" + sem + "_" + year;
         }
 
-        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc) {
+        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc)
+        {
             string sgKey = SGKEY(name, course, sem, year);
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
             List<string> days = new List<string>();
-            foreach (Days day in meetingDays) {
+            foreach (Days day in meetingDays)
+            {
                 if (day.Equals(Days.Monday))
                 {
                     days.Add("Monday");
@@ -211,7 +221,22 @@ namespace Asynchro_Connect.Model
             await docRef.SetAsync(group);
         }
 
-        public async Task<StudyGroup> GetStudyGroup(string id) {
+        public async Task<List<StudyGroup>> GetEveryStudyGroup()
+        {
+            CollectionReference allStudyGroupsCollection = db.Collection(STUDY_GROUPS_PATH);
+            IAsyncEnumerable<DocumentReference> a = allStudyGroupsCollection.ListDocumentsAsync();
+            int count = await a.CountAsync();
+            
+            for(int i = 0; i < count; i++)
+            {
+
+            }
+
+            return null;
+        }
+
+        public async Task<StudyGroup> GetStudyGroup(string id)
+        {
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(id);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
@@ -226,11 +251,11 @@ namespace Asynchro_Connect.Model
                 List<object> temp = (List<object>)groupDict[SG_MEET_DAYS_KEY];
                 List<Days> l = new List<Days>();
                 //for (int i = 0; i < temp.Count; i++)
-                foreach(object obj in temp)
+                foreach (object obj in temp)
                 {
                     //l.Add((Days)((long)temp[i]));
                     //Console.WriteLine(l[i]);
-                    
+
                     if (((string)obj).Equals("Monday"))
                     {
                         l.Add(Days.Monday);
@@ -258,13 +283,18 @@ namespace Asynchro_Connect.Model
                     else if (((string)obj).Equals("Sunday"))
                     {
                         l.Add(Days.Sunday);
-                        Console.WriteLine(l[l.Count-1]);
+                        Console.WriteLine(l[l.Count - 1]);
                     }
                 }
 
                 //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
-                StudyGroup group = new StudyGroup(await GetUser((string)groupDict[SG_ADMIN_KEY]), (string)groupDict[SG_NAME_KEY], (string)groupDict[SG_COURSE_KEY], (int)groupDict[SG_TIME_HOUR_KEY], (int)groupDict[SG_TIME_MINUTE_KEY], l, (int)groupDict[SG_DURATION_KEY], (Semester)groupDict[SG_SEMESTER_KEY], (int)groupDict[SG_YEAR_KEY], (string)groupDict[SG_DESC_KEY]);
-                return null;
+                User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
+                StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
+                    Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
+                    //(Semester)groupDict[SG_SEMESTER_KEY]
+                    Semester.Winter
+                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                return group;
             }
             return null;
         }
@@ -275,7 +305,8 @@ namespace Asynchro_Connect.Model
             DocumentReference groupsRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
             DocumentSnapshot snapshot = await groupsRef.GetSnapshotAsync();
 
-            if (snapshot.Exists) {
+            if (snapshot.Exists)
+            {
                 return true;
             }
             return false;

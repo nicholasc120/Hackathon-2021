@@ -15,13 +15,31 @@ namespace Asynchro_Connect.View
     {
 
         User theUser;
-        public HomeView(User theUser)
+        DBmanager dbm;
+        public HomeView(User theUser, DBmanager dbm)
         {
+            this.dbm = dbm;
             InitializeComponent();
             this.homeTab.DrawMode = (TabDrawMode)DrawMode.OwnerDrawFixed;
             this.homeTab.DrawItem += new DrawItemEventHandler(homeView_DrawItem);
             this.theUser = theUser;
             PopulateActiveGroupList();
+            PopulateAllGroupList();
+        }
+
+
+        private async void PopulateAllGroupList()
+        {
+            StudyGroup sg = await dbm.GetStudyGroup("G1_Hackathon_Fall_2021");
+            List<StudyGroup> everyGroup = new List<StudyGroup>();
+            everyGroup.Add(sg);
+            everyGroup = await dbm.GetEveryStudyGroup();
+
+            groupsList.Items.Clear();
+            foreach (StudyGroup stg in everyGroup)
+            {
+                groupsList.Items.Add(stg.StudyGroupName);
+            }
         }
 
         private void PopulateActiveGroupList()
@@ -29,6 +47,7 @@ namespace Asynchro_Connect.View
             activeGroupList.Items.Clear();
             foreach (StudyGroup sg in theUser.Groups)
             {
+                Console.WriteLine("User group name is " + sg.StudyGroupName);
                 activeGroupList.Items.Add(sg.StudyGroupName);
             }
         }
@@ -153,12 +172,18 @@ namespace Asynchro_Connect.View
             }
         }
 
-        private void groupsList_SelectedIndexChanged(object sender, EventArgs e)
+        private async void groupsList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String s = (String)activeGroupList.SelectedItem;
+
+            StudyGroup sdg = await dbm.GetStudyGroup("G1_Hackathon_Fall_2021");
+            List<StudyGroup> everyGroup = new List<StudyGroup>();
+            everyGroup.Add(sdg);
+
+            String s = (String)groupsList.SelectedItem;
+
             StudyGroup stg = null;
             //find the group for the user
-            foreach (StudyGroup sg in theUser.Groups)
+            foreach (StudyGroup sg in everyGroup)
             {
                 if (sg.StudyGroupName.Equals(s))
                 {
@@ -198,11 +223,10 @@ namespace Asynchro_Connect.View
                 return;
             }
 
-            theUser.JoinGroup(stg);
             stg.AddMember(theUser);
         }
 
-        private void createGroupButton_Click(object sender, EventArgs e)
+        private async void createGroupButton_Click(object sender, EventArgs e)
         {
             //generate warning
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to create this group?", "Warning", MessageBoxButtons.YesNo);
@@ -210,33 +234,33 @@ namespace Asynchro_Connect.View
             {
                 //do something
                 List<Days> daysSelected = new List<Days>();
-                foreach (ListViewItem listItem in meetingDaysCheckBox.CheckedItems)
+                foreach (Object listItem in meetingDaysCheckBox.CheckedItems)
                 {
-                    if (listItem.Text.Equals("Monday"))
+                    if (listItem.ToString().Equals("Monday"))
                     {
                         daysSelected.Add(Days.Monday);
                     }
-                    if (listItem.Text.Equals("Tuesday"))
+                    if (listItem.ToString().Equals("Tuesday"))
                     {
                         daysSelected.Add(Days.Tuesday);
                     }
-                    if (listItem.Text.Equals("Wednesday"))
+                    if (listItem.ToString().Equals("Wednesday"))
                     {
                         daysSelected.Add(Days.Wednesday);
                     }
-                    if (listItem.Text.Equals("Thursday"))
+                    if (listItem.ToString().Equals("Thursday"))
                     {
                         daysSelected.Add(Days.Thursday);
                     }
-                    if (listItem.Text.Equals("Friday"))
+                    if (listItem.ToString().Equals("Friday"))
                     {
                         daysSelected.Add(Days.Friday);
                     }
-                    if (listItem.Text.Equals("Saturday"))
+                    if (listItem.ToString().Equals("Saturday"))
                     {
                         daysSelected.Add(Days.Saturday);
                     }
-                    if (listItem.Text.Equals("Sunday"))
+                    if (listItem.ToString().Equals("Sunday"))
                     {
                         daysSelected.Add(Days.Sunday);
                     }
@@ -263,6 +287,8 @@ namespace Asynchro_Connect.View
                 theUser.JoinGroup(sg);
                 PopulateActiveGroupList();
                 //add to database
+                await dbm.CreateNewStudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
+
                 MessageBox.Show("Study Group successfully created!", "Group created", MessageBoxButtons.OK);
             }
         }

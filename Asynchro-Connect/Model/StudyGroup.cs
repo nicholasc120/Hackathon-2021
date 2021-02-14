@@ -41,7 +41,7 @@ namespace Asynchro_Connect.Model
         public Time MeetingTime { get; private set; }
         public List<Days> MeetingDays { get; private set; }
         public int Duration { get; set; }
-        public Semester CourseSemester;
+        public Semester CourseSemester { get; set; }
         public String Description { get; set; }
         public DiscussionBoard GroupDiscussionBoard;
         public int Year;
@@ -60,9 +60,9 @@ namespace Asynchro_Connect.Model
             Year = year;
             Description = description;
             GroupDiscussionBoard = new DiscussionBoard();
-            AddMember(admin);
+            Members.Add(admin);
         }
-        
+
         public void AddMember(User member)
         {
             Members.Add(member);

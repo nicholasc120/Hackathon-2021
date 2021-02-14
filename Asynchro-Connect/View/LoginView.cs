@@ -64,7 +64,7 @@ namespace Asynchro_Connect.View
             {
                 //login
                 this.Hide();
-                HomeView homeView = new HomeView(theUser);
+                HomeView homeView = new HomeView(theUser, dbManager);
                 homeView.Show();
             }
         }

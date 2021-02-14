@@ -14,7 +14,10 @@ namespace Asynchro_Connect.Model
         public String DisplayName { get; set; }
         public String Password { get; set; }
         public List<StudyGroup> Groups { get; private set; }
-
+        public User()
+        {
+            Groups = new List<StudyGroup>();
+        }
         public void JoinGroup(StudyGroup group)
         {
             Groups.Add(group);
