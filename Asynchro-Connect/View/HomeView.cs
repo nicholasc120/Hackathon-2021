@@ -161,7 +161,7 @@ namespace Asynchro_Connect.View
             if (homeTab.SelectedIndex == 1)
             {
                 List<StudyGroup> results = SearchEngine.SearchByStudyGroupName(theUser.Groups, emailTextBox.Text);
-                activeGroupList.Items.Clear();
+                groupsList.Items.Clear();
                 foreach (StudyGroup sg in results)
                 {
                     groupsList.Items.Add(sg.StudyGroupName);
@@ -199,12 +199,13 @@ namespace Asynchro_Connect.View
             durationFieldLabel.Text = stg.Duration + "";
         }
 
-        private void joinGroupButton_Click(object sender, EventArgs e)
+        private async void joinGroupButton_Click(object sender, EventArgs e)
         {
-            String s = (String)activeGroupList.SelectedItem;
+            List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
+            String s = (String)groupsList.SelectedItem;
             StudyGroup stg = null;
             //find the group for the user
-            foreach (StudyGroup sg in theUser.Groups)
+            foreach (StudyGroup sg in everyGroup)
             {
                 if (sg.StudyGroupName.Equals(s))
                 {
@@ -217,6 +218,8 @@ namespace Asynchro_Connect.View
             }
 
             stg.AddMember(theUser);
+            
+            PopulateActiveGroupList();
         }
 
         private async void createGroupButton_Click(object sender, EventArgs e)

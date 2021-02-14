@@ -284,8 +284,8 @@ namespace Asynchro_Connect.Model
                     User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
                     StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
                         Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
-                        //(Semester)groupDict[SG_SEMESTER_KEY]
-                        Semester.Winter
+                        (Semester)((long)groupDict[SG_SEMESTER_KEY])
+                        //Semester.Summer
                         , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
                     returnList.Add(group);
                 }
@@ -350,8 +350,8 @@ namespace Asynchro_Connect.Model
                 User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
                 StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
                     Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
-                    //(Semester)groupDict[SG_SEMESTER_KEY]
-                    Semester.Winter
+                    (Semester)((long)groupDict[SG_SEMESTER_KEY])
+                    //Semester.Winter
                     , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
                 return group;
             }
