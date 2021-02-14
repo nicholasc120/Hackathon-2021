@@ -13,7 +13,8 @@ namespace Asynchro_Connect.Model
         public static string USER_PATH = "Users", EMAIL_KEY = "Email", SCHOOL_KEY = "School", PASSWORD_KEY = "Password", GROUPS_KEY = "Groups",
             STUDY_GROUPS_PATH = "Study Groups", SG_ADMIN_KEY = "Admin", SG_NAME_KEY = "Name", SG_COURSE_KEY = "Course", SG_TIME_HOUR_KEY = "Time_Hour",
             SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
-            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", MESSAGES_PATH = "Messages", MSG_SENDER_KEY = "Sender", MSG_CONTENT_KEY = "Content", SG_MEMBER_KEY = "Members", SG_JOIN_URL = "Join_Url";
+            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", MESSAGES_PATH = "Messages", MSG_SENDER_KEY = "Sender", MSG_CONTENT_KEY = "Content", 
+            SG_MEMBER_KEY = "Members", SG_JOIN_URL = "Join_Url";
 
 
         public DBmanager()
@@ -436,6 +437,20 @@ namespace Asynchro_Connect.Model
             };
 
             await docRef.UpdateAsync(update);
+        }
+
+        public async Task<List<string>> GetUserStudyGroups(string displayName) {
+            CollectionReference groupsRef = db.Collection(STUDY_GROUPS_PATH);
+            Query query = groupsRef.WhereEqualTo(SG_ADMIN_KEY, displayName);
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+            List<string> groupIDs = new List<string>();
+            foreach (DocumentSnapshot document in snapshot.Documents)
+            {
+                groupIDs.Add(document.Id);
+            }
+
+            return groupIDs;
         }
 
     }
