@@ -33,8 +33,8 @@ namespace Asynchro_Connect.Model
 
     public class StudyGroup
     {
-        public List<User> Members { get; private set; }
-        public User Admin;
+        public List<string> Members { get; private set; }
+        public string Admin;
         public String StudyGroupName { get; private set; }
         public String CourseName { get; private set; }
         public int groupID;
@@ -46,9 +46,9 @@ namespace Asynchro_Connect.Model
         public DiscussionBoard GroupDiscussionBoard;
         public int Year;
 
-        public StudyGroup(User admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description)
+        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description)
         {
-            Members = new List<User>();
+            Members = new List<string>();
             Admin = admin;
             StudyGroupName = studyGroupName;
             CourseName = courseName;
@@ -63,10 +63,26 @@ namespace Asynchro_Connect.Model
             Members.Add(admin);
         }
 
-        public void AddMember(User member)
+        public StudyGroup(string admin, String studyGroupName, String courseName, int timeHour, int timeMinute, List<Days> meetingDays, int duration, Semester courseSemester, int year, String description, List<String> memberList)
+        {
+            Members = memberList;
+            Admin = admin;
+            StudyGroupName = studyGroupName;
+            CourseName = courseName;
+            //groupID = maxGroupID+1;
+            MeetingTime = new Time() { Hour = timeHour, Minute = timeMinute };
+            MeetingDays = meetingDays;
+            Duration = duration;
+            CourseSemester = courseSemester;
+            Year = year;
+            Description = description;
+            GroupDiscussionBoard = new DiscussionBoard();
+        }
+
+        public void AddMember(string member)
         {
             Members.Add(member);
-            member.JoinGroup(this);
+            //member.JoinGroup(this);
             //update database
         }
     }

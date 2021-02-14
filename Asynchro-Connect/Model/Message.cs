@@ -9,9 +9,9 @@ namespace Asynchro_Connect.Model
     public class Message
     {
         public String message;
-        public User sender;
+        public String sender;
 
-        public Message(String message, User sender)
+        public Message(String message, String sender)
         {
             this.message = message;
             this.sender = sender;

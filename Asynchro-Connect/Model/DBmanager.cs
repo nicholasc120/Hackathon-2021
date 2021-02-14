@@ -13,11 +13,12 @@ namespace Asynchro_Connect.Model
         public static string USER_PATH = "Users", EMAIL_KEY = "Email", SCHOOL_KEY = "School", PASSWORD_KEY = "Password", GROUPS_KEY = "Groups",
             STUDY_GROUPS_PATH = "Study Groups", SG_ADMIN_KEY = "Admin", SG_NAME_KEY = "Name", SG_COURSE_KEY = "Course", SG_TIME_HOUR_KEY = "Time_Hour",
             SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
-            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description";
+            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", MESSAGES_PATH = "Messages", MSG_SENDER_KEY = "Sender", MSG_CONTENT_KEY = "Content", SG_MEMBER_KEY = "Members";
 
         public DBmanager()
         {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\.env\\Asynchro-Connect-cc3f69022ee5.json");
+
             this.db = FirestoreDb.Create("asynchro-connect-304800");
         }
 
@@ -206,6 +207,8 @@ namespace Asynchro_Connect.Model
                 }
             }
 
+            List<string> members = new List<string>();
+            members.Add(admin);
             Dictionary<string, object> group = new Dictionary<string, object> {
                 {SG_ADMIN_KEY , admin},
                 {SG_NAME_KEY , name},
@@ -216,7 +219,8 @@ namespace Asynchro_Connect.Model
                 {SG_DURATION_KEY , duration},
                 {SG_SEMESTER_KEY , sem},
                 {SG_YEAR_KEY , year},
-                {SG_DESC_KEY , desc}
+                {SG_DESC_KEY , desc},
+                {SG_MEMBER_KEY, members}
             };
             await docRef.SetAsync(group);
         }
@@ -242,7 +246,7 @@ namespace Asynchro_Connect.Model
                     }
 
                     List<object> temp = (List<object>)groupDict[SG_MEET_DAYS_KEY];
-                    List<Days> l = new List<Days>();
+                    List<Days> meetingDays = new List<Days>();
                     //for (int i = 0; i < temp.Count; i++)
                     foreach (object obj in temp)
                     {
@@ -251,42 +255,48 @@ namespace Asynchro_Connect.Model
 
                         if (((string)obj).Equals("Monday"))
                         {
-                            l.Add(Days.Monday);
+                            meetingDays.Add(Days.Monday);
                         }
                         else if (((string)obj).Equals("Tuesday"))
                         {
-                            l.Add(Days.Tuesday);
+                            meetingDays.Add(Days.Tuesday);
                         }
                         else if (((string)obj).Equals("Wednesday"))
                         {
-                            l.Add(Days.Wednesday);
+                            meetingDays.Add(Days.Wednesday);
                         }
                         else if (((string)obj).Equals("Thursday"))
                         {
-                            l.Add(Days.Thursday);
+                            meetingDays.Add(Days.Thursday);
                         }
                         else if (((string)obj).Equals("Friday"))
                         {
-                            l.Add(Days.Friday);
+                            meetingDays.Add(Days.Friday);
                         }
                         else if (((string)obj).Equals("Saturday"))
                         {
-                            l.Add(Days.Saturday);
+                            meetingDays.Add(Days.Saturday);
                         }
                         else if (((string)obj).Equals("Sunday"))
                         {
-                            l.Add(Days.Sunday);
-                            Console.WriteLine(l[l.Count - 1]);
+                            meetingDays.Add(Days.Sunday);
+                            //Console.WriteLine(meetingDays[meetingDays.Count - 1]);
                         }
                     }
 
+                    temp = (List<object>)groupDict[SG_MEMBER_KEY];
+                    List<string> members = new List<string>();
+                    foreach (object obj in temp)
+                    {
+                        members.Add((string)obj);
+                    }
+
                     //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
-                    User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
-                    StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
-                        Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
+                    StudyGroup group = new StudyGroup((string)groupDict[SG_ADMIN_KEY], (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
+                        Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), meetingDays, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
                         (Semester)((long)groupDict[SG_SEMESTER_KEY])
                         //Semester.Summer
-                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members);
                     returnList.Add(group);
                 }
             }
@@ -308,7 +318,7 @@ namespace Asynchro_Connect.Model
                 }
 
                 List<object> temp = (List<object>)groupDict[SG_MEET_DAYS_KEY];
-                List<Days> l = new List<Days>();
+                List<Days> meetingDays = new List<Days>();
                 //for (int i = 0; i < temp.Count; i++)
                 foreach (object obj in temp)
                 {
@@ -317,42 +327,48 @@ namespace Asynchro_Connect.Model
 
                     if (((string)obj).Equals("Monday"))
                     {
-                        l.Add(Days.Monday);
+                        meetingDays.Add(Days.Monday);
                     }
                     else if (((string)obj).Equals("Tuesday"))
                     {
-                        l.Add(Days.Tuesday);
+                        meetingDays.Add(Days.Tuesday);
                     }
                     else if (((string)obj).Equals("Wednesday"))
                     {
-                        l.Add(Days.Wednesday);
+                        meetingDays.Add(Days.Wednesday);
                     }
                     else if (((string)obj).Equals("Thursday"))
                     {
-                        l.Add(Days.Thursday);
+                        meetingDays.Add(Days.Thursday);
                     }
                     else if (((string)obj).Equals("Friday"))
                     {
-                        l.Add(Days.Friday);
+                        meetingDays.Add(Days.Friday);
                     }
                     else if (((string)obj).Equals("Saturday"))
                     {
-                        l.Add(Days.Saturday);
+                        meetingDays.Add(Days.Saturday);
                     }
                     else if (((string)obj).Equals("Sunday"))
                     {
-                        l.Add(Days.Sunday);
-                        Console.WriteLine(l[l.Count - 1]);
+                        meetingDays.Add(Days.Sunday);
+                        Console.WriteLine(meetingDays[meetingDays.Count - 1]);
                     }
                 }
 
-                //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
-                User n = await GetUser((string)groupDict[SG_ADMIN_KEY]);
-                StudyGroup group = new StudyGroup(n, (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
-                    Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
+                temp = (List<object>)groupDict[SG_MEMBER_KEY];
+                List<string> members = new List<string>();
+                foreach (object obj in temp)
+                { 
+                    members.Add((string)obj);
+                }
+
+                    //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
+                    StudyGroup group = new StudyGroup((string)groupDict[SG_ADMIN_KEY], (String)groupDict[SG_NAME_KEY], (String)groupDict[SG_COURSE_KEY],
+                    Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), meetingDays, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
                     (Semester)((long)groupDict[SG_SEMESTER_KEY])
                     //Semester.Winter
-                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], members);
                 return group;
             }
             return null;
@@ -369,6 +385,39 @@ namespace Asynchro_Connect.Model
                 return true;
             }
             return false;
+        }
+
+        public async void CreateNewMessage(string id, string sender, string content) {
+            Dictionary<string, object> message = new Dictionary<string, object>
+            {
+                { MSG_SENDER_KEY, sender},
+                { MSG_CONTENT_KEY, content},
+            };
+            await db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH).AddAsync(message);
+        }
+
+        public async Task<List<Message>> GetMessages(string id) {
+            CollectionReference colRef = db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH);
+            QuerySnapshot snapshot = await colRef.GetSnapshotAsync();
+
+            List<Message> messageList = new List<Message>();
+
+            foreach (DocumentSnapshot document in snapshot.Documents) {
+                Dictionary<string, object> messageDict = document.ToDictionary();
+                Message message = new Message((string)messageDict[MSG_CONTENT_KEY], (string)messageDict[MSG_SENDER_KEY]);
+                messageList.Add(message);
+            }
+
+            return messageList;
+        }
+
+        public async void AddGroupMember(string id, string user) {
+            Dictionary<string, object> message = new Dictionary<string, object>
+            {
+                { MSG_SENDER_KEY, sender},
+                { MSG_CONTENT_KEY, content},
+            };
+            await db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH).AddAsync(message);
         }
 
     }

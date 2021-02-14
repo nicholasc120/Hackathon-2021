@@ -22,8 +22,8 @@ namespace Asynchro_Connect
             DBmanager dbm = new DBmanager();
             //List<Days> d = new List<Days>();
             //d.Add(Days.Sunday);
-            //await dbm.CreateNewStudyGroup("alovelace", "G1", "Hackathon", 12, 0, d, 30, Semester.Fall, 2021, "Finish the Hackathon!");
-                await dbm.GetStudyGroup(dbm.SGKEY("G1", "Hackathon", Semester.Fall, 2021));
+            await dbm.CreateNewStudyGroup("alovelace", "G1", "Hackathon", 12, 0, d, 30, Semester.Fall, 2021, "Finish the Hackathon!");
+            //await dbm.GetStudyGroup(dbm.SGKEY("G1", "Hackathon", Semester.Fall, 2021));
             Application.Run(new View.LoginView(dbm));
             
         }
