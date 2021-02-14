@@ -24,7 +24,7 @@ namespace Asynchro_Connect.View
 
             RefreshMemberList();
             RefreshMessages();
-            if (theStudyGroup.Admin != theUser)
+            if (!theStudyGroup.Admin.Equals(theUser))
             {
                 kickUserButton.Visible = false;
             }
@@ -44,18 +44,18 @@ namespace Asynchro_Connect.View
 
         private void MemberListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (theUser == theStudyGroup.Admin)
+            if (!theUser.Equals(theStudyGroup.Admin))
                 kickUserButton.Enabled = true;
         }
 
         private void kickUserButton_Click(object sender, EventArgs e)
         {
             String s = MemberListBox.SelectedItem.ToString(); //does this work?
-            foreach (User user in theStudyGroup.Members)
+            foreach (String user in theStudyGroup.Members)
             {
-                if (user.DisplayName.Equals(s))
+                if (user.Equals(s))
                 {
-                    user.Groups.Remove(theStudyGroup);
+                    //user.Groups.Remove(theStudyGroup);
                     theStudyGroup.Members.Remove(user);
                 }
             }
@@ -66,11 +66,11 @@ namespace Asynchro_Connect.View
         {
             MemberListBox.Items.Clear();
             MemberListBox.Items.Add(theUser.DisplayName + "*");
-            foreach (User user in theStudyGroup.Members)
+            foreach (String user in theStudyGroup.Members)
             {
-                if (user != theUser)
+                if (!user.Equals(theUser))
                 {
-                    MemberListBox.Items.Add(user.DisplayName);
+                    MemberListBox.Items.Add(user);
                 }
             }
         }

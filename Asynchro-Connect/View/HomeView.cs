@@ -217,7 +217,7 @@ namespace Asynchro_Connect.View
                 return;
             }
 
-            stg.AddMember(theUser);
+            stg.AddMember(theUser.DisplayName);
             
             PopulateActiveGroupList();
         }
@@ -279,7 +279,7 @@ namespace Asynchro_Connect.View
                 {
                     theSemester = Semester.Summer;
                 }
-                StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
+                StudyGroup sg = new StudyGroup(theUser.DisplayName, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
                 theUser.JoinGroup(sg);
                 PopulateActiveGroupList();
                 //add to database
@@ -311,7 +311,7 @@ namespace Asynchro_Connect.View
                     return;
                 }
 
-                stg.Members.Remove(theUser);
+                stg.Members.Remove(theUser.DisplayName);
                 theUser.Groups.Remove(stg);
             }
         }

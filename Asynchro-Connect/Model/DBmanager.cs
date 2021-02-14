@@ -285,6 +285,7 @@ namespace Asynchro_Connect.Model
                     }
 
                     temp = (List<object>)groupDict[SG_MEMBER_KEY];
+
                     List<string> members = new List<string>();
                     foreach (object obj in temp)
                     {

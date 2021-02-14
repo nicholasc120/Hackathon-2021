@@ -16,7 +16,7 @@ namespace Asynchro_Connect.Model
         }
         public void SendMessage(String message, User sender)
         {
-            Message theMessage = new Message(message, sender);
+            Message theMessage = new Message(message, sender.DisplayName);
             History.Add(theMessage);
             //update database
         }
@@ -26,7 +26,7 @@ namespace Asynchro_Connect.Model
             List<String> log = new List<String>();
             foreach (Message m in History)
             {
-                String message = m.sender.DisplayName + ": " + m.message;
+                String message = m.sender + ": " + m.message;
                 log.Add(message);
             }
 
