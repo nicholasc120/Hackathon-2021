@@ -14,12 +14,10 @@ namespace Asynchro_Connect
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            //Console.WriteLine("Created Cloud Firestore client with project ID: {0}", "Asynchro-Connect");
             DBmanager dbm = new DBmanager();
             Application.Run(new View.LoginView());
             

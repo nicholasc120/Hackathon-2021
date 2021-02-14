@@ -8,17 +8,16 @@ namespace Asynchro_Connect.Model
 {
     public class User
     {
-        
 
         public String School { get; set; }
         public String Email { get; set; }
         public String DisplayName { get; set; }
         public String Password { get; set; }
-        public List<StudyGroup> groups { get; private set; }
+        public List<StudyGroup> Groups { get; private set; }
 
         public void JoinGroup(StudyGroup group)
         {
-            groups.Add(group);
+            Groups.Add(group);
             //update database
         }
 
