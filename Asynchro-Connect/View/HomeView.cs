@@ -45,26 +45,16 @@ namespace Asynchro_Connect.View
         private async void PopulateActiveGroupList()
         {
             List<String> userGroups = await dbm.GetUserStudyGroups(theUser.DisplayName);
-            List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
+            //List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
 
             activeGroupList.Items.Clear();
             theUser.Groups.Clear();
 
-            foreach (StudyGroup stg in everyGroup)
+            foreach (String s in userGroups)
             {
-                Console.WriteLine("in PopulateActiveGroupList, " + stg.StudyGroupName);
-                foreach (String sg in userGroups)
-                {
-                    if (stg.StudyGroupName.Equals(sg.Split('_')[0]))
-                    {
-                        theUser.Groups.Add(stg);
-                    }
-                }
-            }
-
-            foreach (StudyGroup stg in everyGroup)
-            {
-                activeGroupList.Items.Add(stg.StudyGroupName);
+                StudyGroup sg = await dbm.GetStudyGroup(s);
+                activeGroupList.Items.Add(sg.StudyGroupName);
+                theUser.Groups.Add(sg);
             }
         }
 
