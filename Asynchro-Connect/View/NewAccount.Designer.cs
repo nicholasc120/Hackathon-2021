@@ -41,6 +41,7 @@ namespace Asynchro_Connect.View
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.displayNameTextBox = new System.Windows.Forms.TextBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.backToLoginButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.createAccountButton = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -65,6 +66,7 @@ namespace Asynchro_Connect.View
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.backToLoginButton);
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer1.Panel2.Controls.Add(this.createAccountButton);
             this.splitContainer1.Size = new System.Drawing.Size(353, 168);
@@ -194,6 +196,21 @@ namespace Asynchro_Connect.View
             this.passwordTextBox.Size = new System.Drawing.Size(146, 25);
             this.passwordTextBox.TabIndex = 6;
             // 
+            // backToLoginButton
+            // 
+            this.backToLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.backToLoginButton.BackColor = System.Drawing.Color.Plum;
+            this.backToLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.backToLoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backToLoginButton.Location = new System.Drawing.Point(6, 92);
+            this.backToLoginButton.Name = "backToLoginButton";
+            this.backToLoginButton.Size = new System.Drawing.Size(114, 25);
+            this.backToLoginButton.TabIndex = 5;
+            this.backToLoginButton.Text = "Back";
+            this.backToLoginButton.UseVisualStyleBackColor = false;
+            this.backToLoginButton.Click += new System.EventHandler(this.backToLoginButton_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
@@ -230,6 +247,7 @@ namespace Asynchro_Connect.View
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NewAccount";
             this.Text = "Create an account!";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NewAccount_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -257,5 +275,6 @@ namespace Asynchro_Connect.View
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Button createAccountButton;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button backToLoginButton;
     }
 }

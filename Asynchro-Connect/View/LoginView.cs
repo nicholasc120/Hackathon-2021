@@ -7,13 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Asynchro_Connect.Model;
 
 namespace Asynchro_Connect.View
 {
     public partial class LoginView : Form
     {
-        public LoginView()
+        DBmanager dbManager;
+        NewAccount accountWindow = null;
+        public LoginView(DBmanager dbManager)
         {
+            this.dbManager = dbManager;
             InitializeComponent();
         }
 
@@ -35,10 +39,32 @@ namespace Asynchro_Connect.View
         private void createAccountButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            NewAccount accountWindow = new NewAccount();
+            if (accountWindow == null)
+            {
+                accountWindow = new NewAccount(this, dbManager);
+            }
             accountWindow.ShowDialog();
-
         }
 
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            tryLogin();
+        }
+
+        private async void tryLogin()
+        {
+            User theUser = await dbManager.GetUser(emailTextBox.Text);
+
+            if (theUser == null)
+            {
+                //give error
+                MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                //login
+                this.Hide();
+            }
+        }
     }
 }

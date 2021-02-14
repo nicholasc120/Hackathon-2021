@@ -20,9 +20,7 @@ namespace Asynchro_Connect
             Application.SetCompatibleTextRenderingDefault(false);
 
             DBmanager dbm = new DBmanager();
-            User u = await dbm.GetUserByEmail("email1@email.com");
-            Console.WriteLine(u.DisplayName);
-            Application.Run(new View.LoginView());
+            Application.Run(new View.LoginView(dbm));
             
         }
     }

@@ -129,6 +129,7 @@ namespace Asynchro_Connect.View
             this.loginButton.TabIndex = 2;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = false;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // tableLayoutPanel1
             // 

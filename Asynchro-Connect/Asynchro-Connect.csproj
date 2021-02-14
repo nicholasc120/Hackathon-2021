@@ -166,6 +166,12 @@
     <Compile Include="View\NewAccount.Designer.cs">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\StudyGroupHomepage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\StudyGroupHomepage.Designer.cs">
+      <DependentUpon>StudyGroupHomepage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -183,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\NewAccount.resx">
       <DependentUpon>NewAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\StudyGroupHomepage.resx">
+      <DependentUpon>StudyGroupHomepage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
