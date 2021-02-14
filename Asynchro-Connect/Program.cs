@@ -21,7 +21,6 @@ namespace Asynchro_Connect
 
             //Console.WriteLine("Created Cloud Firestore client with project ID: {0}", "Asynchro-Connect");
             DBmanager dbm = new DBmanager();
-            dbm.test();
             Application.Run(new View.LoginView());
             
         }

@@ -16,15 +16,6 @@ namespace Asynchro_Connect.Model
             this.db = FirestoreDb.Create("asynchro-connect-304800");
         }
 
-        public async Task test() {
-            DocumentReference docRef = db.Collection("users").Document("alovelace");
-            Dictionary<string, object> user = new Dictionary<string, object>
-            {
-                { "First", "Ada" },
-                { "Last", "Lovelace" },
-                { "Born", 1815 }
-            };
-            await docRef.SetAsync(user);
-        }
+        
     }
 }
