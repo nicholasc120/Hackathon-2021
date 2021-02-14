@@ -35,6 +35,7 @@ namespace Asynchro_Connect.View
                 minute = "0" + minute;
             }
             meetingTimeLabel.Text = theStudyGroup.MeetingTime.Hour + ":" + minute;
+            meetingLinkLabel.Text = theStudyGroup.JoinUrl;
         }
 
         private void MemberListBox_Leave(object sender, EventArgs e)
@@ -78,6 +79,12 @@ namespace Asynchro_Connect.View
         private void sendMessageButton_Click(object sender, EventArgs e)
         {
             theStudyGroup.GroupDiscussionBoard.SendMessage(messageTextBox.Text, theUser);
+        }
+
+        private void meetingLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process newProcess = System.Diagnostics.Process.Start(this.theStudyGroup.JoinUrl);
+
         }
     }
 }

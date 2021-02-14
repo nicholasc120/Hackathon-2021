@@ -13,7 +13,7 @@ namespace Asynchro_Connect.Model
         public static string USER_PATH = "Users", EMAIL_KEY = "Email", SCHOOL_KEY = "School", PASSWORD_KEY = "Password", GROUPS_KEY = "Groups",
             STUDY_GROUPS_PATH = "Study Groups", SG_ADMIN_KEY = "Admin", SG_NAME_KEY = "Name", SG_COURSE_KEY = "Course", SG_TIME_HOUR_KEY = "Time_Hour",
             SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
-            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description";
+            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description", SG_JOIN_URL = "Join_Url";
 
         public DBmanager()
         {
@@ -169,7 +169,7 @@ namespace Asynchro_Connect.Model
             return name + "_" + course + "_" + sem + "_" + year;
         }
 
-        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc)
+        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc, string joinUrl)
         {
             string sgKey = SGKEY(name, course, sem, year);
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
@@ -216,7 +216,8 @@ namespace Asynchro_Connect.Model
                 {SG_DURATION_KEY , duration},
                 {SG_SEMESTER_KEY , sem},
                 {SG_YEAR_KEY , year},
-                {SG_DESC_KEY , desc}
+                {SG_DESC_KEY , desc},
+                {SG_JOIN_URL, joinUrl}
             };
             await docRef.SetAsync(group);
         }
@@ -286,7 +287,7 @@ namespace Asynchro_Connect.Model
                         Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
                         //(Semester)groupDict[SG_SEMESTER_KEY]
                         Semester.Winter
-                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                        , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], (String)groupDict[SG_JOIN_URL]);
                     returnList.Add(group);
                 }
             }
@@ -352,7 +353,7 @@ namespace Asynchro_Connect.Model
                     Convert.ToInt32((long)groupDict[SG_TIME_HOUR_KEY]), Convert.ToInt32((long)groupDict[SG_TIME_MINUTE_KEY]), l, Convert.ToInt32((long)groupDict[SG_DURATION_KEY]),
                     //(Semester)groupDict[SG_SEMESTER_KEY]
                     Semester.Winter
-                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY]);
+                    , Convert.ToInt32((long)groupDict[SG_YEAR_KEY]), (String)groupDict[SG_DESC_KEY], (String)groupDict[SG_JOIN_URL]);
                 return group;
             }
             return null;

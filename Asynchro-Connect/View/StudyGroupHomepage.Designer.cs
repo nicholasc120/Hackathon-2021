@@ -68,6 +68,7 @@
             this.meetingLinkLabel.TabIndex = 2;
             this.meetingLinkLabel.TabStop = true;
             this.meetingLinkLabel.Text = "Meeting Link Placeholder";
+            this.meetingLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.meetingLinkLabel_LinkClicked);
             // 
             // GroupDiscussionLog
             // 

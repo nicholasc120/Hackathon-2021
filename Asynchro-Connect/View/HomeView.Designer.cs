@@ -94,6 +94,7 @@ namespace Asynchro_Connect.View
             this.openGroupButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.homeTab = new System.Windows.Forms.TabControl();
+            this.zoomJoinUrl = new System.Windows.Forms.Label();
             this.createGroupsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -887,6 +888,7 @@ namespace Asynchro_Connect.View
             // 
             this.flowLayoutPanel1.Controls.Add(this.openGroupButton);
             this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Controls.Add(this.zoomJoinUrl);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(5, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(592, 34);
@@ -938,6 +940,15 @@ namespace Asynchro_Connect.View
             this.homeTab.SelectedIndex = 0;
             this.homeTab.Size = new System.Drawing.Size(616, 416);
             this.homeTab.TabIndex = 0;
+            // 
+            // zoomJoinUrl
+            // 
+            this.zoomJoinUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.zoomJoinUrl.AutoSize = true;
+            this.zoomJoinUrl.Location = new System.Drawing.Point(243, 8);
+            this.zoomJoinUrl.Name = "zoomJoinUrl";
+            this.zoomJoinUrl.Size = new System.Drawing.Size(0, 15);
+            this.zoomJoinUrl.TabIndex = 5;
             // 
             // HomeView
             // 
@@ -1011,6 +1022,7 @@ namespace Asynchro_Connect.View
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.homeTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1080,5 +1092,6 @@ namespace Asynchro_Connect.View
         private Label label2;
         private TableLayoutPanel tableLayoutPanel5;
         private ListBox groupChatPreview;
+        private Label zoomJoinUrl;
     }
 }
