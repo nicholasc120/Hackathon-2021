@@ -60,6 +60,7 @@ namespace Asynchro_Connect.Model
             Year = year;
             Description = description;
             GroupDiscussionBoard = new DiscussionBoard();
+            AddMember(admin);
         }
         
         public void AddMember(User member)
