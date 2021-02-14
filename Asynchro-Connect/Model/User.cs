@@ -13,7 +13,7 @@ namespace Asynchro_Connect.Model
         public String Email { get; set; }
         public String DisplayName { get; set; }
         public String Password { get; set; }
-        public List<StudyGroup> Groups { get; private set; }
+        public List<StudyGroup> Groups { get; set; }
         public User()
         {
             Groups = new List<StudyGroup>();

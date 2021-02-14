@@ -29,7 +29,7 @@ namespace Asynchro_Connect.Model
                 String message = m.sender + ": " + m.message;
                 log.Add(message);
             }
-
+            log.Reverse();
             return log;
         }
     }

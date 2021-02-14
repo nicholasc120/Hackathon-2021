@@ -42,13 +42,29 @@ namespace Asynchro_Connect.View
             }
         }
 
-        private void PopulateActiveGroupList()
+        private async void PopulateActiveGroupList()
         {
+            List<String> userGroups = await dbm.GetUserStudyGroups(theUser.DisplayName);
+            List<StudyGroup> everyGroup = await dbm.GetEveryStudyGroup();
+
             activeGroupList.Items.Clear();
-            foreach (StudyGroup sg in theUser.Groups)
+            theUser.Groups.Clear();
+
+            foreach (StudyGroup stg in everyGroup)
             {
-                Console.WriteLine("User group name is " + sg.StudyGroupName);
-                activeGroupList.Items.Add(sg.StudyGroupName);
+                Console.WriteLine("in PopulateActiveGroupList, " + stg.StudyGroupName);
+                foreach (String sg in userGroups)
+                {
+                    if (stg.StudyGroupName.Equals(sg.Split('_')[0]))
+                    {
+                        theUser.Groups.Add(stg);
+                    }
+                }
+            }
+
+            foreach (StudyGroup stg in everyGroup)
+            {
+                activeGroupList.Items.Add(stg.StudyGroupName);
             }
         }
 
@@ -107,6 +123,7 @@ namespace Asynchro_Connect.View
             //find the group for the user
             foreach (StudyGroup sg in theUser.Groups)
             {
+                Console.WriteLine(sg.StudyGroupName);
                 if (sg.StudyGroupName.Equals(s))
                 {
                     stg = sg;
@@ -114,6 +131,7 @@ namespace Asynchro_Connect.View
             }
             if (stg == null)
             {
+                Console.WriteLine("Coldn't find it, the value was " + s);
                 return;
             }
             //launch StudyGroupHomepage
@@ -226,7 +244,7 @@ namespace Asynchro_Connect.View
             }
 
             stg.AddMember(theUser.DisplayName);
-            
+
             PopulateActiveGroupList();
         }
 

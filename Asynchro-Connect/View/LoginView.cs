@@ -55,7 +55,7 @@ namespace Asynchro_Connect.View
         {
             User theUser = await dbManager.GetUser(emailTextBox.Text);
 
-            if (theUser == null)
+            if (theUser == null || !theUser.Password.Equals(passwordTextBox.Text))
             {
                 //give error
                 MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
