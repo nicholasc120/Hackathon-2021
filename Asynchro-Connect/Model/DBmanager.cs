@@ -412,12 +412,23 @@ namespace Asynchro_Connect.Model
         }
 
         public async void AddGroupMember(string id, string user) {
-            Dictionary<string, object> message = new Dictionary<string, object>
+            DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(id);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+            Dictionary<string, object> groupDict = snapshot.ToDictionary();
+            List<object> temp = (List<object>)groupDict[SG_MEMBER_KEY];
+            List<string> members = new List<string>();          
+            foreach (object obj in temp)
             {
-                { MSG_SENDER_KEY, sender},
-                { MSG_CONTENT_KEY, content},
-            };
-            await db.Collection(STUDY_GROUPS_PATH).Document(id).Collection(MESSAGES_PATH).AddAsync(message);
+                members.Add((string)obj);
+            }
+            members.Add(user);
+
+            Dictionary<string, object> update = new Dictionary<string, object> {
+                {SG_MEMBER_KEY, members}
+            }  ;
+
+            await docRef.UpdateAsync(update);
         }
 
     }
