@@ -439,6 +439,27 @@ namespace Asynchro_Connect.Model
             await docRef.UpdateAsync(update);
         }
 
+        public async void RemoveGroupMember(string id, string user)
+        {
+            DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(id);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+            Dictionary<string, object> groupDict = snapshot.ToDictionary();
+            List<object> temp = (List<object>)groupDict[SG_MEMBER_KEY];
+            List<string> members = new List<string>();
+            foreach (object obj in temp)
+            {
+                members.Add((string)obj);
+            }
+            members.Remove(user);
+
+            Dictionary<string, object> update = new Dictionary<string, object> {
+                {SG_MEMBER_KEY, members}
+            };
+
+            await docRef.UpdateAsync(update);
+        }
+
         public async Task<List<string>> GetUserStudyGroups(string displayName) {
             CollectionReference groupsRef = db.Collection(STUDY_GROUPS_PATH);
             Query query = groupsRef.WhereEqualTo(SG_ADMIN_KEY, displayName);
