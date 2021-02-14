@@ -37,6 +37,7 @@ namespace Asynchro_Connect.View
             this.Hide();
             NewAccount accountWindow = new NewAccount();
             accountWindow.ShowDialog();
+
         }
 
     }
