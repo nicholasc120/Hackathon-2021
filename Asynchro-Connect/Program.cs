@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Asynchro_Connect.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace Asynchro_Connect
 {
@@ -12,11 +14,14 @@ namespace Asynchro_Connect
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static async Task Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new View.HomeView());
+
+            DBmanager dbm = new DBmanager();
+            Application.Run(new View.LoginView());
+            
         }
     }
 }
