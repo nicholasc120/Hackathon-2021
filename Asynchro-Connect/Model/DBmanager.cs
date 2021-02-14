@@ -11,7 +11,9 @@ namespace Asynchro_Connect.Model
     {
         private FirestoreDb db;
         public static string USER_PATH = "Users", EMAIL_KEY = "Email", SCHOOL_KEY = "School", PASSWORD_KEY = "Password", GROUPS_KEY = "Groups",
-            STUDY_GROUPS_PATH = "Study Groups", SG_NAME_KEY = "Name";
+            STUDY_GROUPS_PATH = "Study Groups", SG_ADMIN_KEY = "Admin", SG_NAME_KEY = "Name", SG_COURSE_KEY = "Course", SG_TIME_HOUR_KEY = "Time_Hour",
+            SG_TIME_MINUTE_KEY = "Time_Minute", SG_MEET_DAYS_KEY = "Meeting_Days", SG_DURATION_KEY = "Duration", SG_SEMESTER_KEY = "Semester",
+            SG_YEAR_KEY = "Year", SG_DESC_KEY = "Description";
 
         public DBmanager() {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\.env\\Asynchro-Connect-cc3f69022ee5.json"); 
@@ -90,16 +92,19 @@ namespace Asynchro_Connect.Model
 
         public async Task<bool> CheckEmailExists(string email) {
             CollectionReference usersRef = db.Collection(USER_PATH);
-            QuerySnapshot snapshot = await usersRef.GetSnapshotAsync();
+            Query query = usersRef.WhereEqualTo("EMAIL_KEY", email);
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
-            foreach (DocumentSnapshot document in snapshot.Documents)
-            {
-                Dictionary<string, object> userDict = document.ToDictionary();
-                if (((string)userDict[EMAIL_KEY]).Equals(email)) {
-                    return true;
-                }
-            }
-            return false;
+            if (snapshot.Count == 0) { return false; }
+            return true;
+            //foreach (DocumentSnapshot document in snapshot.Documents)
+            //{
+            //    Dictionary<string, object> userDict = document.ToDictionary();
+            //    if (((string)userDict[EMAIL_KEY]).Equals(email)) {
+            //        return true;
+            //    }
+            //}
+            //return false;
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -153,23 +158,33 @@ namespace Asynchro_Connect.Model
             return null;
         }
 
-        public string SGKEY(string name, string course, Semester sem)
+        public string SGKEY(string name, string course, Semester sem, int year)
         {
-            return name + "_" + course + "_" + sem;
+            return name + "_" + course + "_" + sem+"_"+year;
         }
 
-        public async void CreateNewStudyGroup(string name, string course, int tHour, int tMinute, int duration, Semester sem, string desc) {
-            string sgKey = SGKEY(name, course, sem);
+        public async void CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc) {
+            string sgKey = SGKEY(name, course, sem, year);
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
-            Dictionary<string, object> group = new Dictionary<string, object> { 
-                
+            Dictionary<string, object> group = new Dictionary<string, object> {
+                {SG_ADMIN_KEY , admin},
+                {SG_NAME_KEY , name},
+                {SG_COURSE_KEY , course},
+                {SG_TIME_HOUR_KEY , tHour},
+                {SG_TIME_MINUTE_KEY , tMinute},
+                {SG_MEET_DAYS_KEY , null},
+                {SG_DURATION_KEY , duration},
+                {SG_SEMESTER_KEY , sem},
+                {SG_YEAR_KEY , year},
+                {SG_DESC_KEY , desc}
             };
+            await docRef.SetAsync(group);
         }
 
-        public async Task<bool> CheckStudyGroupExists(string name, string course, Semester sem)
+        public async Task<bool> CheckStudyGroupExists(string name, string course, Semester sem, int year)
         {
 
-            string sgKey = SGKEY(name, course, sem);
+            string sgKey = SGKEY(name, course, sem, year);
             CollectionReference usersRef = db.Collection(STUDY_GROUPS_PATH);
             QuerySnapshot snapshot = await usersRef.GetSnapshotAsync();
 
