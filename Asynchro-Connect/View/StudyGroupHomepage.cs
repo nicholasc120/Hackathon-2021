@@ -23,7 +23,7 @@ namespace Asynchro_Connect.View
             InitializeComponent();
 
             RefreshMemberList();
-
+            RefreshMessages();
             if (theStudyGroup.Admin != theUser)
             {
                 kickUserButton.Visible = false;
@@ -75,10 +75,21 @@ namespace Asynchro_Connect.View
                 }
             }
         }
+        
+        private void RefreshMessages()
+        {
+            GroupDiscussionLog.Items.Clear();
+            foreach (String message in theStudyGroup.GroupDiscussionBoard.GetListOfMessages())
+            {
+                GroupDiscussionLog.Items.Add(message);
+            }
+        }
 
         private void sendMessageButton_Click(object sender, EventArgs e)
         {
             theStudyGroup.GroupDiscussionBoard.SendMessage(messageTextBox.Text, theUser);
+            messageTextBox.Text = "";
+            RefreshMessages();
         }
 
         private void meetingLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
