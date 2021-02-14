@@ -92,7 +92,7 @@ namespace Asynchro_Connect.Model
 
         public async Task<bool> CheckEmailExists(string email) {
             CollectionReference usersRef = db.Collection(USER_PATH);
-            Query query = usersRef.WhereEqualTo("EMAIL_KEY", email);
+            Query query = usersRef.WhereEqualTo(EMAIL_KEY, email);
             QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
             if (snapshot.Count == 0) { return false; }
@@ -110,21 +110,19 @@ namespace Asynchro_Connect.Model
         public async Task<User> GetUserByEmail(string email)
         {
             CollectionReference usersRef = db.Collection(USER_PATH);
+            Query query = usersRef.WhereEqualTo(EMAIL_KEY, email);
             QuerySnapshot snapshot = await usersRef.GetSnapshotAsync();
 
             foreach (DocumentSnapshot document in snapshot.Documents)
             {
                 Dictionary<string, object> userDict = document.ToDictionary();
-                if (((string)userDict[EMAIL_KEY]).Equals(email))
-                {
-                    User user = new User();
-                    user.DisplayName = document.Id;
-                    user.Email = (string)userDict[EMAIL_KEY];
-                    user.School = (string)userDict[SCHOOL_KEY];
-                    user.Password = (string)userDict[PASSWORD_KEY];
-                    //user.Groups = userDict[GROUPS_KEY];
-                    return user;
-                }
+                User user = new User();
+                user.DisplayName = document.Id;
+                user.Email = (string)userDict[EMAIL_KEY];
+                user.School = (string)userDict[SCHOOL_KEY];
+                user.Password = (string)userDict[PASSWORD_KEY];
+                //user.Groups = userDict[GROUPS_KEY];
+                return user;
             }
             return null;
         }
@@ -163,16 +161,48 @@ namespace Asynchro_Connect.Model
             return name + "_" + course + "_" + sem+"_"+year;
         }
 
-        public async void CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc) {
+        public async Task CreateNewStudyGroup(string admin, string name, string course, int tHour, int tMinute, List<Days> meetingDays, int duration, Semester sem, int year, string desc) {
             string sgKey = SGKEY(name, course, sem, year);
             DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
+            List<string> days = new List<string>();
+            foreach (Days day in meetingDays) {
+                if (day.Equals(Days.Monday))
+                {
+                    days.Add("Monday");
+                }
+                else if (day.Equals(Days.Tuesday))
+                {
+                    days.Add("Tuesday");
+                }
+                else if (day.Equals(Days.Wednesday))
+                {
+                    days.Add("Wednesday");
+                }
+                else if (day.Equals(Days.Thursday))
+                {
+                    days.Add("Thursday");
+                }
+                else if (day.Equals(Days.Friday))
+                {
+                    days.Add("Friday");
+                }
+                else if (day.Equals(Days.Saturday))
+                {
+                    days.Add("Saturday");
+                }
+                else if (day.Equals(Days.Sunday))
+                {
+                    days.Add("Sunday");
+                }
+            }
+
             Dictionary<string, object> group = new Dictionary<string, object> {
                 {SG_ADMIN_KEY , admin},
                 {SG_NAME_KEY , name},
                 {SG_COURSE_KEY , course},
                 {SG_TIME_HOUR_KEY , tHour},
                 {SG_TIME_MINUTE_KEY , tMinute},
-                {SG_MEET_DAYS_KEY , null},
+                {SG_MEET_DAYS_KEY , days},
                 {SG_DURATION_KEY , duration},
                 {SG_SEMESTER_KEY , sem},
                 {SG_YEAR_KEY , year},
@@ -181,20 +211,72 @@ namespace Asynchro_Connect.Model
             await docRef.SetAsync(group);
         }
 
+        public async Task<StudyGroup> GetStudyGroup(string id) {
+            DocumentReference docRef = db.Collection(STUDY_GROUPS_PATH).Document(id);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+            if (snapshot.Exists)
+            {
+                Dictionary<string, object> groupDict = snapshot.ToDictionary();
+                foreach (KeyValuePair<string, object> pair in groupDict)
+                {
+                    Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+                }
+
+                List<object> temp = (List<object>)groupDict[SG_MEET_DAYS_KEY];
+                List<Days> l = new List<Days>();
+                //for (int i = 0; i < temp.Count; i++)
+                foreach(object obj in temp)
+                {
+                    //l.Add((Days)((long)temp[i]));
+                    //Console.WriteLine(l[i]);
+                    
+                    if (((string)obj).Equals("Monday"))
+                    {
+                        l.Add(Days.Monday);
+                    }
+                    else if (((string)obj).Equals("Tuesday"))
+                    {
+                        l.Add(Days.Tuesday);
+                    }
+                    else if (((string)obj).Equals("Wednesday"))
+                    {
+                        l.Add(Days.Wednesday);
+                    }
+                    else if (((string)obj).Equals("Thursday"))
+                    {
+                        l.Add(Days.Thursday);
+                    }
+                    else if (((string)obj).Equals("Friday"))
+                    {
+                        l.Add(Days.Friday);
+                    }
+                    else if (((string)obj).Equals("Saturday"))
+                    {
+                        l.Add(Days.Saturday);
+                    }
+                    else if (((string)obj).Equals("Sunday"))
+                    {
+                        l.Add(Days.Sunday);
+                        Console.WriteLine(l[l.Count-1]);
+                    }
+                }
+
+                //foreach(var element in groupDict[SG_MEET_DAYS_KEY]){ } 
+                StudyGroup group = new StudyGroup(await GetUser((string)groupDict[SG_ADMIN_KEY]), (string)groupDict[SG_NAME_KEY], (string)groupDict[SG_COURSE_KEY], (int)groupDict[SG_TIME_HOUR_KEY], (int)groupDict[SG_TIME_MINUTE_KEY], l, (int)groupDict[SG_DURATION_KEY], (Semester)groupDict[SG_SEMESTER_KEY], (int)groupDict[SG_YEAR_KEY], (string)groupDict[SG_DESC_KEY]);
+                return null;
+            }
+            return null;
+        }
+
         public async Task<bool> CheckStudyGroupExists(string name, string course, Semester sem, int year)
         {
-
             string sgKey = SGKEY(name, course, sem, year);
-            CollectionReference usersRef = db.Collection(STUDY_GROUPS_PATH);
-            QuerySnapshot snapshot = await usersRef.GetSnapshotAsync();
+            DocumentReference groupsRef = db.Collection(STUDY_GROUPS_PATH).Document(sgKey);
+            DocumentSnapshot snapshot = await groupsRef.GetSnapshotAsync();
 
-            foreach (DocumentSnapshot document in snapshot.Documents)
-            {
-                
-                if (document.Id.Equals(sgKey))
-                {
-                    return true;
-                }
+            if (snapshot.Exists) {
+                return true;
             }
             return false;
         }

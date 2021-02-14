@@ -259,7 +259,7 @@ namespace Asynchro_Connect.View
                 {
                     theSemester = Semester.Summer;
                 }
-                StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, descriptionTextBook.Text);
+                StudyGroup sg = new StudyGroup(theUser, groupName.Text, courseNameTextBox.Text, Convert.ToInt32(timeHourScroll.Value), Convert.ToInt32(timeMinutesScroll.Value), daysSelected, Convert.ToInt32(hoursDurationScroll.Value), theSemester, (DateTime.Now).Year, descriptionTextBook.Text);
                 theUser.JoinGroup(sg);
                 PopulateActiveGroupList();
                 //add to database
