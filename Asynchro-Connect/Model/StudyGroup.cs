@@ -85,7 +85,11 @@ namespace Asynchro_Connect.Model
 
         public void AddMember(string member)
         {
-            Members.Add(member);
+            if (!Members.Contains(member))
+            {
+                Members.Add(member);
+            }
+            
             //member.JoinGroup(this);
             //update database
         }

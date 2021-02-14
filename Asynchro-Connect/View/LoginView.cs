@@ -68,5 +68,6 @@ namespace Asynchro_Connect.View
                 homeView.Show();
             }
         }
+
     }
 }
